@@ -1,0 +1,91 @@
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Entrada e saída:
+
+Os seguintes comandos devem ser colocados no início do código para um melhor desempenho de entrada e saída:
+ios::sync_with_stdio(0);
+cin.tie(0);
+
+"\n" é mais rápido do que o endl, porque o endl sempre causa uma operação de limpeza (flush).
+
+Os comandos scanf e printf do C funcionam no C++, são mais rápidos, mas também mais complicados de se usar.
+
+Código para conseguir pegar uma linha inteira separada por espaços:
+string s;
+getline(cin, s);
+
+Se a quantidade de entradas for desconhecidade, pode-se usar:
+while (cin >> x) {
+// code
+}
+
+Algumas competições utilizam arquivos, deixarei o código que deve ser colocado no início do código para esses casos:
+freopen("input.txt", "r", stdin);
+freopen("output.txt", "w", stdout);
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Números flutuantes:
+
+Para números flutuantes, temos dois tipos de variáveis em C++, double (64-bit) e long double (80-bit)
+
+Pode ser arriscado comparar números flutuantes devido os erros de precisão, então pode ser melhor assumir que dois números são iguais se a subtração entre eles for menor que um número muito pequeno, como 10^-9. Como exemplo:
+if (abs(a-b) < 1e-9) {
+// a and b are equal
+}
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Dicas para diminuir o código:
+
+Usar typedef para diminuir o nome de variáveis, por exemplo:
+typedef long long ll; typedef vector<int> vi; typedef pair<int,int> pi;
+
+->Macros:
+
+Outra maneira de diminuir os códigos é definir macros. Um macro significa que certas linhas no código serão alteradas antes da compilação. Exemplos:
+#define F first
+#define S second
+#define PB push_back()
+#define MP make_pair()
+
+Um macro também pode ter parâmetros, o que faz ser possível diminuir loops e outras estruturas. Exemplo:
+#define REP(i,a,b) for (int i = a; i <= b; i++)
+
+Esse código:
+for (int i = 1; i <= n; i++) {
+search(i);
+}
+
+Vira isso:
+REP(i,1,n) {
+search(i);
+}
+
+Algumas vezes, macros causam bugs que são difíceis de detectar. Por exemplo, considere o código abaixo que calcula o quadrado de um número:
+#define SQ(a) a*a
+
+Esse código:
+cout << SQ(3+3) << "\n";
+
+Corresponde a isso:
+cout << 3+3*3+3 << "\n"; // 15
+
+Uma melhor versão desse macro seria:
+#define SQ(a) (a)*(a)
+
+Agora, o código:
+cout << SQ(3+3) << "\n";
+
+Corresponde a:
+cout << (3+3)*(3+3) << "\n" // 36
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Matemática:
+
+->Soma:
+PA: n(a+b)/2 onde a é o primeiro número, b é o último número e n a quantidade de números da sequência
+PG: bk-a/k-1 onde b é o último número, a é o primeiro número e k é a razão entre os números
+
+->Teoria dos conjuntos:
