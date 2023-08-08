@@ -1,4 +1,5 @@
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Capítulo 1:
 
 Entrada e saída:
 
@@ -89,3 +90,32 @@ PA: n(a+b)/2 onde a é o primeiro número, b é o último número e n a quantida
 PG: bk-a/k-1 onde b é o último número, a é o primeiro número e k é a razão entre os números
 
 ->Teoria dos conjuntos:
+
+Um conjunto é uma coleção de elementos, como: X = {5, 8, 9, 10}
+
+|S| denota o tamanho do conjunto, ou seja a quantidade de elementos dentro do conjunto.
+
+Por exemplo, |X| = 4
+
+Se S possui um elemento x, dizemos que x ∈ s, e caso não, x ∉ S.
+5 ∈ X e 7 ∉ X.
+
+Novos conjuntos podem ser criados com as seguintes operações:
+->Interseção; União; Complemento; Diferença.
+
+Se cada elemento do conjunto A também pertence ao conjunto S, dizemos que A é um subconjunto de S.Alguns conjuntos frequentemente usados são N (números naturais), Z (números inteiros), Q (números racionais) e R (números reais).
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Lógica:
+
+->O valor de uma expressão lógica é verdadeiro (1) ou falso (0). Os operadores lógicos mais importantes são: ¬ (negação), ∧ (conjunção), ∨ (disjunção), ⇒ (implicação) e ⇔ (equivalência).
+
+->Predicado é uma expressão que é verdadeira ou falsa dependendo dos parâmetros. Os predicados geralmente são representados por letras maiúsculas. Por exemplo, podemos definir um predicado P(x) que é verdadeiro exatamente quando x é um número primo. Usando essa definição, P(7) é verdadeiro, mas P(8) é falso.
+
+->Um quantificador conecta uma expressão lógica aos elementos de um conjunto. Os quantificadores mais importantes são ∀ (para todo) e ∃ (existe).
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 2:
+
