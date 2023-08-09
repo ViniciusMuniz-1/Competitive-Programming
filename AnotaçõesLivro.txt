@@ -3,119 +3,317 @@ Capítulo 1:
 
 Entrada e saída:
 
-Os seguintes comandos devem ser colocados no início do código para um melhor desempenho de entrada e saída:
-ios::sync_with_stdio(0);
-cin.tie(0);
+    Os seguintes comandos devem ser colocados no início do código para um melhor desempenho de entrada e saída:
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-"\n" é mais rápido do que o endl, porque o endl sempre causa uma operação de limpeza (flush).
+    "\n" é mais rápido do que o endl, porque o endl sempre causa uma operação de limpeza (flush).
 
-Os comandos scanf e printf do C funcionam no C++, são mais rápidos, mas também mais complicados de se usar.
+    Os comandos scanf e printf do C funcionam no C++, são mais rápidos, mas também mais complicados de se usar.
 
-Código para conseguir pegar uma linha inteira separada por espaços:
-string s;
-getline(cin, s);
+    Código para conseguir pegar uma linha inteira separada por espaços:
+    string s;
+    getline(cin, s);
 
-Se a quantidade de entradas for desconhecidade, pode-se usar:
-while (cin >> x) {
-// code
-}
+    Se a quantidade de entradas for desconhecidade, pode-se usar:
+    while (cin >> x) {
+    // code
+    }
 
-Algumas competições utilizam arquivos, deixarei o código que deve ser colocado no início do código para esses casos:
-freopen("input.txt", "r", stdin);
-freopen("output.txt", "w", stdout);
+    Algumas competições utilizam arquivos, deixarei o código que deve ser colocado no início do código para esses casos:
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Números flutuantes:
 
-Para números flutuantes, temos dois tipos de variáveis em C++, double (64-bit) e long double (80-bit)
+    Para números flutuantes, temos dois tipos de variáveis em C++, double (64-bit) e long double (80-bit)
 
-Pode ser arriscado comparar números flutuantes devido os erros de precisão, então pode ser melhor assumir que dois números são iguais se a subtração entre eles for menor que um número muito pequeno, como 10^-9. Como exemplo:
-if (abs(a-b) < 1e-9) {
-// a and b are equal
-}
+    Pode ser arriscado comparar números flutuantes devido os erros de precisão, então pode ser melhor assumir que dois números são iguais se a subtração entre eles for menor que um número muito pequeno, como 10^-9. Como exemplo:
+    if (abs(a-b) < 1e-9) {
+    // a and b are equal
+    }
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Dicas para diminuir o código:
 
-Usar typedef para diminuir o nome de variáveis, por exemplo:
-typedef long long ll; typedef vector<int> vi; typedef pair<int,int> pi;
+    Usar typedef para diminuir o nome de variáveis, por exemplo:
+    typedef long long ll; typedef vector<int> vi; typedef pair<int,int> pi;
 
 ->Macros:
 
-Outra maneira de diminuir os códigos é definir macros. Um macro significa que certas linhas no código serão alteradas antes da compilação. Exemplos:
-#define F first
-#define S second
-#define PB push_back()
-#define MP make_pair()
+    Outra maneira de diminuir os códigos é definir macros. Um macro significa que certas linhas no código serão alteradas antes da compilação. Exemplos:
+    #define F first
+    #define S second
+    #define PB push_back()
+    #define MP make_pair()
 
-Um macro também pode ter parâmetros, o que faz ser possível diminuir loops e outras estruturas. Exemplo:
-#define REP(i,a,b) for (int i = a; i <= b; i++)
+    Um macro também pode ter parâmetros, o que faz ser possível diminuir loops e outras estruturas. Exemplo:
+    #define REP(i,a,b) for (int i = a; i <= b; i++)
 
-Esse código:
-for (int i = 1; i <= n; i++) {
-search(i);
-}
+    Esse código:
+    for (int i = 1; i <= n; i++) {
+    search(i);
+    }
 
-Vira isso:
-REP(i,1,n) {
-search(i);
-}
+    Vira isso:
+    REP(i,1,n) {
+    search(i);
+    }
 
-Algumas vezes, macros causam bugs que são difíceis de detectar. Por exemplo, considere o código abaixo que calcula o quadrado de um número:
-#define SQ(a) a*a
+    Algumas vezes, macros causam bugs que são difíceis de detectar. Por exemplo, considere o código abaixo que calcula o quadrado de um número:
+    #define SQ(a) a*a
 
-Esse código:
-cout << SQ(3+3) << "\n";
+    Esse código:
+    cout << SQ(3+3) << "\n";
 
-Corresponde a isso:
-cout << 3+3*3+3 << "\n"; // 15
+    Corresponde a isso:
+    cout << 3+3*3+3 << "\n"; // 15
 
-Uma melhor versão desse macro seria:
-#define SQ(a) (a)*(a)
+    Uma melhor versão desse macro seria:
+    #define SQ(a) (a)*(a)
 
-Agora, o código:
-cout << SQ(3+3) << "\n";
+    Agora, o código:
+    cout << SQ(3+3) << "\n";
 
-Corresponde a:
-cout << (3+3)*(3+3) << "\n" // 36
+    Corresponde a:
+    cout << (3+3)*(3+3) << "\n" // 36
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Matemática:
 
 ->Soma:
-PA: n(a+b)/2 onde a é o primeiro número, b é o último número e n a quantidade de números da sequência
-PG: bk-a/k-1 onde b é o último número, a é o primeiro número e k é a razão entre os números
+    PA: n(a+b)/2 onde a é o primeiro número, b é o último número e n a quantidade de números da sequência
+    PG: bk-a/k-1 onde b é o último número, a é o primeiro número e k é a razão entre os números
 
 ->Teoria dos conjuntos:
+    Um conjunto é uma coleção de elementos, como: X = {5, 8, 9, 10}
 
-Um conjunto é uma coleção de elementos, como: X = {5, 8, 9, 10}
+    |S| denota o tamanho do conjunto, ou seja a quantidade de elementos dentro do conjunto.
 
-|S| denota o tamanho do conjunto, ou seja a quantidade de elementos dentro do conjunto.
+    Por exemplo, |X| = 4
 
-Por exemplo, |X| = 4
+    Se S possui um elemento x, dizemos que x ∈ s, e caso não, x ∉ S.
+    5 ∈ X e 7 ∉ X.
 
-Se S possui um elemento x, dizemos que x ∈ s, e caso não, x ∉ S.
-5 ∈ X e 7 ∉ X.
-
-Novos conjuntos podem ser criados com as seguintes operações:
-->Interseção; União; Complemento; Diferença.
+    Novos conjuntos podem ser criados com as seguintes operações:
+        ->Interseção; União; Complemento; Diferença.
 
 Se cada elemento do conjunto A também pertence ao conjunto S, dizemos que A é um subconjunto de S.Alguns conjuntos frequentemente usados são N (números naturais), Z (números inteiros), Q (números racionais) e R (números reais).
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Lógica:
-
-->O valor de uma expressão lógica é verdadeiro (1) ou falso (0). Os operadores lógicos mais importantes são: ¬ (negação), ∧ (conjunção), ∨ (disjunção), ⇒ (implicação) e ⇔ (equivalência).
-
-->Predicado é uma expressão que é verdadeira ou falsa dependendo dos parâmetros. Os predicados geralmente são representados por letras maiúsculas. Por exemplo, podemos definir um predicado P(x) que é verdadeiro exatamente quando x é um número primo. Usando essa definição, P(7) é verdadeiro, mas P(8) é falso.
-
-->Um quantificador conecta uma expressão lógica aos elementos de um conjunto. Os quantificadores mais importantes são ∀ (para todo) e ∃ (existe).
+    ->O valor de uma expressão lógica é verdadeiro (1) ou falso (0). Os operadores lógicos mais importantes são: ¬ (negação), ∧ (conjunção), ∨ (disjunção), ⇒ (implicação) e ⇔ (equivalência).
+    ->Predicado é uma expressão que é verdadeira ou falsa dependendo dos parâmetros. Os predicados geralmente são representados por letras maiúsculas. Por exemplo, podemos definir um predicado P(x) que é verdadeiro exatamente quando x é um número primo. Usando essa definição, P(7) é verdadeiro, mas P(8) é falso.
+    ->Um quantificador conecta uma expressão lógica aos elementos de um conjunto. Os quantificadores mais importantes são ∀ (para todo) e ∃ (existe).
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Capítulo 2:
 
+->Complexidade de tempo: 
+    A eficiência dos algoritmos é muito importante em uma competição de programação. É fácil implementar uma solução que resolve os problemas devagar, mas o verdadeiro desafio está em implementar algoritmos rápidos.
+    A complexidade de tempo estima quanto tempo um algoritmo vai usar para cada entrada. A ideia é representar a eficiência de uma função que tem como parâmetro o tamanho da entrada. Calculando a complexidade de tempo, podemos descobrir se o algoritmo é rápido o suficiente para ser implementado.
+
+    Regras do cálculo:
+        A complexidade de tempo dos algoritmos é representada por O(...) em que o 3 pontos representam alguma função. Geralmente, a variável n denota o tamanho da entrada. Por exemplo, se a entrada for um array de números, n será o tamanho do array, e se a entrada for uma string, n será o comprimento da string.
+
+        Laços:
+            Uma razão comum do motivo de um algoritmo ser lento é por conter muitos laços que dependem do tamanho de entrada. Quanto mais loops aninhados o algoritmo contém, mais lento ele se torna. Se houver k loops aninhados, a complexidade de tempo é O(n^k).
+            Por exemplo, a complexidade do código abaixo é O(n):
+                for(int i = 0; i <= n; ++i){
+                    //code
+                }
+            E esse código possui complexidade de O(n²):
+                for(int i = 0; i < n; ++i){
+                    for(int j = 0; j < n; ++j){
+                        // code
+                    }
+                }
+        
+        Ordem de grandeza:
+            A complexidade de tempo não diz exatamente a quantidade de vezes que o código dentro do laço será executado, apenas mostra a ordem de grandeza. No exemplo a seguir, o código dentro do loop será executado 3n, n+5 e ~n/2 vezes, mas a complexidade de cada código é O(n).
+            for(int i = 0; i < 3*n; ++i){
+                //code
+            }
+
+            for(int i = 0; i < n+5; ++i){
+                //code
+            }
+
+            for(int i = 0; i < n; i+=2){
+                //code
+            }
+
+        Fases:
+            Se um algoritmo consiste em consecutivas fases, o tempo total de complexidade será o maior tempo de complexidade de uma única fase. A razão disso é que a fase mais lenta será o gargalo do código.
+            Para exemplo, o código seguinte consiste em 3 fases que tem como complexidade de tempo, respectivamente, O(n), O(n²) e O(n). Então, a complexidade total será O(n²)!
+            for(int i = 0; i < n; ++i){
+                //code
+            }
+
+            for(int i = 0; i < n; ++i){
+                for(int j = 0; j < n; ++j){
+                    //code
+                }
+            }
+
+            for(int i = 0; i < n; ++i){
+                //code
+            }
+
+        Várias variáveis:
+            De vez em quando, a complexidade de tempo depende de vários fatores. Nesse caso, a fórmula da complexidade de tempo conterá várias variáveis.
+            Para exemplo, a complexidade do código abaixo é O(n*m):
+                for(int i = 0; i < n; ++i){
+                    for(int j = 0; j < m; ++j){
+                        //code
+                    }
+                }
+
+        Recursividade:
+            A complexidade de tempo de uma função recursiva depende do número de vezes que a função é chamada e da complexidade de tempo de uma única chamada. A complexidade de tempo total é o produto desses valores.
+            Para exemplo, considere o código abaixo:
+                void f (int n){
+                    if(n==1) return;
+                    f(n-1);
+                }
+                
+            A chamada f(n) causa n chamadas de função, e a complexidade de cada chamada é O(1). Então, a complexidade de tempo será O(n).
+            
+            Como outro exemplo, temos a seguinte função:
+                void g(int n){
+                    if(n == 1) return;
+                    g(n-1);
+                    g(n-1);
+                }
+
+            Nesse caso, cada chamada de função gera outras duas chamadas, exceto para n=1. Vamos ver o que acontece quando g é chamado com um parâmetro n. O seguinte esquema nos mostra a chamada de função produzida por uma chamada:
+
+            Chamada de função  | Número de chamadas
+            g(n)                                  1
+            g(n-1)                                2
+            g(n-2)                                4
+            ...                                 ...
+            g(1)                                2^n-1
+
+            Baseado nisso, a complexidade de tempo será:
+                1+2+4+...+2^n-1 = 2^n - 1 = O(2^n).
+
+        Classes de complexidade de tempo:
+
+            O(1) - Complexidade constante: O tempo de execução do algoritmo não depende do tamanho da entrada; é sempre constante;
+            O(log n) - Complexidade logarítmica: O tempo de execução do algoritmo cresce de forma logarítmica em relação ao tamanho da entrada;
+            O(square(n)) - Um algoritmo de raiz quadrada é mais lento que O(log n) mas mais rápido que O(n). 
+            O(n) - Complexidade linear: O tempo de execução do algoritmo cresce linearmente em relação ao tamanho da entrada;
+            O(n²) - Complexidade quadrática: O tempo de execução do algoritmo cresce quadraticamente em relação ao tamanho da entrada;
+            O(n³) - Complexidade cúbica: O tempo de execução do algoritmo cresce cubicamente em relação ao tamanho da entrada;
+            O(n log n) - Complexidade log-linear: O tempo de execução do algoritmo cresce de forma log-linear em relação ao tamanho da entrada.
+            O(2^n) - Essa complexidade de tempo frequentemente indica que o algoritmo itera por todos os subconjuntos dos elementos de entrada. Por exemplo, os subconjuntos de {1,2,3} são vazios, {1}, {2}, {3}, {1,2}, {1,3}, {2,3} e {1,2,3}.
+            O(n!) - Essa complexidade de tempo frequentemente indica que o algoritmo itera por todas as permutações dos elementos de entrada. Por exemplo, as permutações de {1,2,3} são (1,2,3), (1,3,2), (2,1,3), (2,3,1), (3,1,2) e (3,2,1).
+
+            Um algoritmo é polinomial se sua complexidade de tempo for no máximo O(n^k), onde k é uma constante. Todas as complexidades de tempo acima, exceto O(2^n) e O(n!), são polinomiais. Na prática, a constante k geralmente é pequena, e, portanto, uma complexidade de tempo polinomial significa aproximadamente que o algoritmo é eficiente. 
+            A maioria dos algoritmos neste livro é polinomial. Ainda assim, existem muitos problemas importantes para os quais nenhum algoritmo polinomial é conhecido, ou seja, ninguém sabe como resolvê-los de forma eficiente. Problemas NP-difíceis são um conjunto importante de problemas para os quais nenhum algoritmo polinomial é conhecido.
+            
+        Estimando eficiência:
+
+            Calculando a complexidade de tempo de um algoritmo, é possível checar, antes da implementação, se ele é eficiente o suficiente para resolver o problema. O ponto de partida para estimativas é o fato que os computadores modernos podem executar algumas centenas de milhões de números de operação em segundos.
+            Para exemplo, vamos assumir que o tempo limite para um problema seja de 1 segundo e o tamanho de entrada seja n = 10^5. Se a complexidade de tempo for O(n²), o algoritmo iria performar cerca de (10^5)² = 10^10 operações. Isso deve demandar um pouco mais que 10 segundos, então o algoritmo parece ser lento demais para resolver o problema.
+            Por outro lado, dado o tamanho de entrada, nós podemos tentar adivinhar o tempo de complexidade que o algoritmo deve ter para resolver o problema. A tabela a seguir contém algumas estimativas de tempo assumindo o tempo limite de 1 segundo.
+            
+            Tamanho da entrada | Tempo de complexidade requirido
+            n <= 10                                        O(n!)
+            n <= 20                                        O(2^n)
+            n <= 500                                       O(n³)
+            n <= 5000                                      O(n²)
+            n <= 10^6                         O(n log n) or O(n)
+            n é maior                           O(1) ou O(log n)
+
+            Para exemplo, se o tamanho da entrada for n = 10^5, é provável que a complexidade de tempo esperado seja de O(n) ou O(log n). Essa informação faz com que seja mais fácil projetar o algoritmo, pois descarta abordagens que resultariam em um algoritmo com uma complexidade de tempo pior.
+            Mesmo assim, é importante lembrar que o tempo de complexidade é apenas uma estimativa da eficiência, pois pode esconder fatores constantes. Por exemplo, um algoritmo que rode em tempo O(n) pode performar n/2 ou 5n operações. 
+
+        Soma máxima de um subconjunto:
+
+            Frequentemente existem diversos algoritmos para resolver um problema, de forma que suas complexidades de tempo sejam diferentes. Esse seção discute um problema clássico que possui uma solução direta em O(n³). Porém, projetando um melhor algoritmo, é possível resolver o problema em O(n²) ou até mesmo em O(n).
+            
+            Problema: dado um array de n números, nossa missão é calcular a soma máxima de um subconjunto, ou seja, a maior soma possível de uma sequência de valores consecutivos em um array. O problema se torna interessante quando podem haver valores negativos no array. Por exemplo, no array:
+            [-1, 2, 4, -3, 5, 2, -5, 2]
+
+            O subarray seguinte produz uma soma máxima de 10:
+            [-1, 2, 4, -3, 5, 2, -5, 2]
+            2+4+(-3)+5+2 = 10
+
+            Assumimos que um array vazio é permitido, então a soma máxima de um subarray sempre será, pelo menos, 0.
+
+            Algoritmo 1:
+                Uma solução direta para resolver o problema é percorrer todos os subarray possíveis, calcular a soma dos valores em cada subarray e manter a soma máxima. O seguinte código implementa esse algoritmo:
+
+                int best = 0;
+                for(int a = 0; a < n; a++){
+                    for(int b = a; b < n; b++){
+                        int sum = 0;
+                        for(int k = a; k <= b; k++){
+                            sum += array[k];
+                        }
+                        best = max(best, sum);
+                    }
+                }
+                cout << best << "\n";
+
+                As variáveis a e b fixam o primeiro e o último index do subarray, e a soma dos valores é calculada e armazenada na variável sum. A variável best contém a soma máximo encontrada durante a procura.
+                A complexidade de tempo desse código é O(n³), pois consiste em 3 array aninhados que dependem do tamanho de entrada.
+
+            Algoritmo 2:
+                É facíl tornar o algoritmo 1 mais eficiente removendo um laço dele. Isso é possível calculando a soma ao mesmo tempo em que a extremidade direita do subarray se move. O resultado é o código abaixo:
+                
+                int best = 0;
+                for(int a  = 0; a <n; a++){
+                    int sum = 0;
+                    for(int b = a; b < n; b++){
+                        sum+= array[b];
+                        best = max(best, sum);
+                    }
+                }
+                cout << best << "\n";
+
+            Algoritmo 3:
+                Surpreendentemente, é possível resolver esse problema em um tempo O(n), o que significa que um único laço é o suficiente. A ideia é calcular, para cada uma das posições do array, a soma máxima de um subarrray que termina nessa posição. Após isso, a resposta para o problema será o máximo entre essas somas.
+                Considere o sub problema de encontrar a soma máxima de um subarray que termina na posição k. Existem 2 possibilidades:
+                1 - O subarray apenas contém o elemento na posição k
+                2 - O subarray consiste em um subarray que termina na posição k -1, seguido pelo elemento na posição k.
+                No segundo caso, uma vez que queremos encontrar um subarray com soma máxima, o subarray que termina na posição k-1 deve ter a soma máxima. Assim, podemos resolver o problema de forma eficiente calculando a soma máxima do subarray para cada posição final da esquerda para a direita.
+                O seguinte código implementa esse algoritmo:
+
+                int best = 0, sum = 0;
+                for(int k = 0; k < n; k++){
+                    sum = max(array[k], sum+array[k]);
+                    best = max(best, sum);
+                }
+                cout << best << "\n";
+
+                O algoritmo contém apenas um laço que depende do tamanho da entrada, então a complexidade de tempo é O(n). Esse é o melhor tempo possível, pois qualquer outro algoritmo para o problema examina cada elemento do array pelo menos uma vez.
+            
+            Comparação de eficiência:
+                É interessante estudar o quão eficiente são os algoritmos na prática. A seguinte tabela mostra o tempo de execução os algoritmos acima para diferentes valores de n em um computador moderno.
+                Para cada teste, a entrada foi gerada aleatoriamente. O tempo necessário para a leitura da entrada não foi mensurado.
+                
+                array de tamanho n  | Algoritmo 1 | Algoritmo 2 | Algoritmo 3
+                                10²          0.0s          0.0s         0.0s
+                                10³          0.1s          0.0s         0.0s
+                                10^4      > 10.0s          0.0s         0.0s
+                                10^5      > 10.0s          0.1s         0.0s
+                                10^6      > 10.0s          5.3s         0.0s
+                                10^7      > 10.0s       > 10.0s         0.0s
+                                10^8      > 10.0s       > 10.0s         0.0s
+
+                A comparação mostra que os algoritmos são eficientes quando o tamanho de entrada é pequeno, mas entradas maiores trazem a tona a diferença entre o tempo de execução dos algoritmos. Algoritmo 1 se torna mais lento quando n = 10^4, e o Algoritmo 2 se torna mais lento quando n = 10^5. Apenas o algoritmo 3 é hábil à processar até mesmo as maiores entradas intantaneamente.
+            
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 3:
+
+->Ordenação:
