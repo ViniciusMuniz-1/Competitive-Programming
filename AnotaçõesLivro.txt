@@ -15,7 +15,7 @@ Entrada e saída:
     string s;
     getline(cin, s);
 
-    Se a quantidade de entradas for desconhecidade, pode-se usar:
+    Se a quantidade de entradas for desconhecida, pode-se usar:
     while (cin >> x) {
     // code
     }
@@ -212,7 +212,7 @@ Capítulo 2:
             O(n) - Complexidade linear: O tempo de execução do algoritmo cresce linearmente em relação ao tamanho da entrada;
             O(n²) - Complexidade quadrática: O tempo de execução do algoritmo cresce quadraticamente em relação ao tamanho da entrada;
             O(n³) - Complexidade cúbica: O tempo de execução do algoritmo cresce cubicamente em relação ao tamanho da entrada;
-            O(n log n) - Complexidade log-linear: O tempo de execução do algoritmo cresce de forma log-linear em relação ao tamanho da entrada.
+            O(nlogn) - Complexidade log-linear: O tempo de execução do algoritmo cresce de forma log-linear em relação ao tamanho da entrada.
             O(2^n) - Essa complexidade de tempo frequentemente indica que o algoritmo itera por todos os subconjuntos dos elementos de entrada. Por exemplo, os subconjuntos de {1,2,3} são vazios, {1}, {2}, {3}, {1,2}, {1,3}, {2,3} e {1,2,3}.
             O(n!) - Essa complexidade de tempo frequentemente indica que o algoritmo itera por todas as permutações dos elementos de entrada. Por exemplo, as permutações de {1,2,3} são (1,2,3), (1,3,2), (2,1,3), (2,3,1), (3,1,2) e (3,2,1).
 
@@ -230,7 +230,7 @@ Capítulo 2:
             n <= 20                                        O(2^n)
             n <= 500                                       O(n³)
             n <= 5000                                      O(n²)
-            n <= 10^6                         O(n log n) or O(n)
+            n <= 10^6                         O(nlogn) or O(n)
             n é maior                           O(1) ou O(log n)
 
             Para exemplo, se o tamanho da entrada for n = 10^5, é provável que a complexidade de tempo esperado seja de O(n) ou O(log n). Essa informação faz com que seja mais fácil projetar o algoritmo, pois descarta abordagens que resultariam em um algoritmo com uma complexidade de tempo pior.
@@ -310,10 +310,285 @@ Capítulo 2:
                                 10^7      > 10.0s       > 10.0s         0.0s
                                 10^8      > 10.0s       > 10.0s         0.0s
 
-                A comparação mostra que os algoritmos são eficientes quando o tamanho de entrada é pequeno, mas entradas maiores trazem a tona a diferença entre o tempo de execução dos algoritmos. Algoritmo 1 se torna mais lento quando n = 10^4, e o Algoritmo 2 se torna mais lento quando n = 10^5. Apenas o algoritmo 3 é hábil à processar até mesmo as maiores entradas intantaneamente.
+                A comparação mostra que os algoritmos são eficientes quando o tamanho de entrada é pequeno, mas entradas maiores trazem a tona a diferença entre o tempo de execução dos algoritmos. Algoritmo 1 se torna mais lento quando n = 10^4, e o Algoritmo 2 se torna mais lento quando n = 10^5. Apenas o algoritmo 3 é hábil à processar até mesmo as maiores entradas instantaneamente.
             
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Capítulo 3:
 
 ->Ordenação:
+    Ordenação é um problema fundamental de design de algoritmo. Vários algoritmos eficientes usam ordenação como uma sub-rotina, porque é frequentemente mais fácil processar dados se os elementos estiverem ordenados.
+    Por exemplo, o problema "um array possui dois elementos iguais?" é fácil de resolver usando ordenação. Se o array possuir dois elementos iguais, eles estarão do lado um do outro depois da ordenação, então é fácil encontrá-los. Também, o problema "qual o elemento mais frequente no array?" pode ser resolvido de forma similar.
+    Existem vários algoritmos para ordenação, e eles são bons exemplos de como aplicar diferentes técnicas de design de algoritmos. Os algoritmos gerais de ordenação eficientes atuam em tempo O(nlogn), e vários algoritmos que usam ordenação como sub-rotina também tem essa complexidade de tempo.
+
+    Teoria da ordenação:
+        O problema básico na ordenação é o seguinte:
+        Dado um array que contém n elementos, sua tarefa é ordenar os elementos em ordem crescente.
+
+        Por exemplo, o array:
+        [1, 3, 8, 2, 9, 2, 5, 6]
+
+        Deve estar assim após a ordenação:
+        [1, 2, 2, 3, 5, 6, 8, 9]
+
+    Algoritmos em O(n²):
+        Algoritmos simples de ordenação de array funcionam em tempo O(n²). Esses algoritmos são curtos e frequentemente consistem em 2 laços aninhados. Um famoso algoritmo de ordenação com tempo O(n²) é o bubble sort, no qual os elementos "borbulham" no array de acordo com seus valores.
+        O bubble sort consiste em n fases. Em cada fase, o algoritmo percorre os elementos do array. Sempre que 2 elementos consecutivos não estiverem na ordem correta, o algoritmo troca eles de posição. O algoritmo pode ser implementado com o código abaixo:
+
+        for(int i = 0; i < n; ++i){
+            for(int j = 0; j < n-1; ++j){
+                if(array[j] > array[j+1]){
+                    swap(array[j], array[j+1]);
+                }
+            }
+        }
+
+        Após a primeira fase do algoritmo, o maior valor estará na posição correta, e geralmente, após k fases, os k maiores elementos estarão nas posições corretas. Assim, após n fases, todo o array está ordenado.
+
+        Por exemplo, no array:
+        [1, 3, 8, 2, 9, 2, 5, 6]
+
+        a primeira fase do bubble sort mudará os seguintes da seguinte forma:
+        [1, 3, 2, 8, 9, 2, 5, 6]
+
+        [1, 3, 2, 8, 2, 9, 5, 6]
+
+        [1, 3, 2, 8, 2, 5, 9, 6]
+
+        [1, 3, 2, 8, 2, 5, 6, 9]
+
+    Inversões:
+        Bubble sort é um exemplo de um algoritmo de ordenação que sempre troca elementos consecutivos no array. Isso torna o tempo de complexidade de um algoritmo como esse sempre ser, pelo menos, O(n²), porque no pior caso, O(n²) trocas são requeridas para ordenar o array.
+        Um conceito útil ao analisar algoritmos de ordenação é a inversão: um par de elementos do array {array[a], array[b]} tal que a < b and array[a] > array[b], ou seja, esses elementos estão na ordem errada. Por exemplo, o array:
+        [1, 2, 2, 6, 3, 5, 9, 8]
+
+        possui 3 inversões: (6, 3), (6, 5) e (9, 8). O número de inversões indica o quanto de trabalho se terá para ordenar um array. Um array está completamente ordenado quando não há inversões. Por outro lado, se os elementos do array estão em ordem inversa, o número de inversões é o maior possível: 
+
+        1 + 2 + ... + (n-1) = (n(n-1))/2 = O(n²)
+
+        Trocar um par de elementos consecutivos que estão na ordem errada remove exatamente uma inversão do array. Portanto, se o algoritmo de ordenação só pode trocar elementos consecutivos, cada troca remove pelo menos uma inversão, e o tempo de complexidade do algoritmo se torna ao menos O(n²).
+
+    Algoritmo em tempo O(nlogn):
+        É possível ordenar um array de maneira eficiente em tempo O(nlogn) usando algoritmos que não se limitam à troca de elementos consecutivos. Um algoritmo desse tipo é o merge sort, qual se baseia em recursividade.
+        Merge sort ordena um subarray array[a...b] da seguinte forma:
+        1. Se a = b, não faça nada, porque o subarray já está ordenado.
+        2. Calcule a posição do elemento do meio: k = ~[a+b/2].
+        3. Recursivamente ordene o subarray array[a...k].
+        4. Recursivamente ordene o subarray array[k+1...b].
+        5. Junte os subarrays ordenados array[a...k] e array[k+1...b] em um subarray ordenado array[a...b].
+
+        O merge sort é um algoritmo eficiente, pois reduz pela metade o tamanho do subarray em cada etapa. A recursão consiste em O(log n) níveis, e processar cada um dos níveis leva tempo O(n). Juntar os subarrays array[a...k] e array[k+1...b] é possível de ser feito em tempo linear O(1), porque eles já estão ordenado.
+        Por exemplo, considere ordenar o seguinte array:
+        [1, 3, 6, 2, 8, 2, 5, 9]
+        
+        O array será divido em 2 subarrayas da seguinte forma:
+        [1, 3, 6, 2] [8, 2, 5, 9]
+
+        Então, os subarrays serão ordenados recursivamente da seguinte forma:
+        [1, 2, 3, 6] [2, 5, 8, 9]
+
+        Finalmente, o algoritmo junta os dois subarrays ordenados e cria um último array ordenado:
+        [1, 2, 2, 3, 5, 6, 8, 9]
+
+    Limite inferior de ordenação:
+        É possível ordenar um array mais rápido do que em tempo O(nlogn)? Acontece que isso não é possível quando nos restringimos a algoritmos de ordenação baseados em comparar os elementos do array.
+        O limite inferior para a complexidade de tempo pode ser provado considerando a ordenação como um processo em que cada comparação de dois elementos fornece mais informações sobre o conteúdo do array. O processo cria a seguinte árvore:
+
+                x < y?
+            x<y?       x<y?
+        x<y?   x<y? x<y?  x<y?
+
+        Aqui, "x<y?" significa que vários elementos x e y estão sendo comparados. Se x<y, o processo continua para a esquerda, caso contrário, para a direita. O resultado do processo são os possíveis caminhos para se ordenar o array, um total de n! formas. Por essa razão, a altura da árvore deve ser no mínimo
+            log2(n!) = log2(1) + log2(2) + ... + log2(n)
+        Obtemos um limite inferior para essa soma escolhendo os últimos n/2 elementos e alterando o valor de cada elemento para log2(n/2). Isso nos fornece uma estimativa
+            log2(n!) >= (n/2) * log2(n/2)
+        então a altura da árvore e o mínimo de etas possíveis para um algoritmos de ordenação no pior caso é nlogn.
+
+    Counting sort:
+        O limite inferior de nlogn não se aplica a algoritmos que não comparam elementos do array, mas usam outras informações. Como exemplo temos o algoritmo counting sort, que ordena um array em tempo O(n) assumindo que cada um dos elementos do array é um inteiro entre 0...c e c = O(n).
+        O algoritmo cria um array de registro, cujos índices são elementos do array original. O algoritmo percorre o array original e calcula quantas vezes cada elemento aparece no array.
+        Por exemplo, o array:
+        [1, 3, 6, 9, 9, 3, 5, 9]
+
+        corresponde ao seguinte array de registro:
+         1  2  3  4  5  6  7  8  9
+        [1, 0, 2, 0, 1, 1, 0, 0, 3]
+
+        Por exemplo, o valor na posição 3 no array de registro é 2, pois o elemento 3 aparece 2 vezes no array original.
+        A construção do array de registra leva tempo O(n). Depois disso, o array ordenado pode ser criado em tempo O(n) porque o número de ocorrências para cada elemento pode ser retirada do array de registro. Assim, o tempo de complexidade total do counting sort é O(n).
+        Counting sort é um algoritmo eficiente, mas só pode ser usado quando a constante c é pequena o suficiente para que os elementos do array possam ser usados como índices no array de registro.
+
+    Ordenando em C++:
+        Quase sempre é uma má ideia usar algoritmos de ordenação feitos em casa em uma competição, pois existem boas implementações disponíveis nas linguagens de programação. Por exemplo, a biblioteca padrão do C++ contém a função sort que pode ser facilmente usada para ordenar arrays e outras estruturas de dados.
+        Existem muitos benefícios em usar funções de bibliotecas. Primeiro, salva tempo porque não é necessário implementar uma outra função. Segundo, a implementação da biblioteca é com certeza correta e eficiente: não é provável que uma função de ordenar feita em casa seja melhor.
+        Nessa seção, veremos como usar a função sort do C++. O seguinte código ordena um vetor em ordem crescente:
+
+        vector<int> v = {4,2,5,3,5,8,3};
+        sort(v.begin(), v.end());
+
+        Após a ordenação, o conteúdo do vetor será [2,3,3,4,5,5,8]. O padrão de ordenação é crescente, mas a ordem inversa é possível com o código a seguir: 
+
+        sort(v.rbegin(), v.rend());
+
+        Um array comum pode ser ordenado da seguinte forma:
+        
+        int n = 7; //tamanho do array
+        int a[] = {4,2,5,3,5,8,3};
+        sort(a,a+n);
+
+        O código seguinte ordena uma string s:
+
+        string s = "monkey";
+        sort(s.begin(), s.end());
+
+        Ordenar uma string significa que os caracteres da string são ordenados. Por exemplo, a string "monkey" se torna "ekmnoy".
+
+    Operadores de comparação:
+        A função sort requer que um operador de comparação seja definido para o tipo de dados dos elementos a serem ordenados. Ao ordenar, esse operador será usado sempre que for necessário determinar a ordem de dois elementos.
+        A maior parte dos tipos de dado do C++ possuem um operador de comparação embutido, então os elementos desse tipo podem ser ordenados automaticamente. Por exemplo, os números são ordenados de acordo com seus valores e strings são ordenadas em ordem alfabética.
+        Pares(pair) são ordenados principalmente de acordo com seus primeiros elementos(first). No entanto, se os primeiros elementos de dois pares forem iguais, eles são ordenados de acordo com seus segundos elementos(second):
+        
+        vector<pair<int,int>> v;
+        v.push_back({1, 5});
+        v.push_back({2, 3});
+        v.push_back({1, 2});
+        sort(v.begin(), v.end());
+
+        Após isso, a ordem dos pares será (1,2), (1,5) e (2,3).
+        
+        De uma maneira similar, tuplas (tuple) são ordenadas primeiramente pelo seu primeiro elemento, secundariamente pelo segundo elemento, etc.:
+        
+        vector<tuple<int,int,int>> v;
+        v.push_back({2,1,4});
+        v.push_back({1,5,3});
+        v.push_back({2,1,3});
+        sort(v.begin(), v.end());
+
+        Após isso, a ordem das tuplas será (1,5,3),(2,1,3) e (2,1,4).
+
+    Estruturas definidas pelo usuário:
+        Estruturas definidas pelo usuário não possuem um operado de comparação automaticamente. O operador deve ser definido dentro do struct como uma função operator<, cujo parâmetro é outro elemento do mesmo tipo. O operador deve retornar true se o elemento for menor que o parâmetro, e falso se for maior.
+        Por exemplo, a seguinte estrutura P contém as coordenadas x e y de um ponto. O operador de comparação é definido então os pontos são ordenados primeiramente pela coordenada x e secundariamente pela coordenada y.
+
+        struct P{
+            int x, y;
+            bool operator<(const P & p){
+                if (x != p.x) return x < p.x;
+                else return y < p.y;
+            }
+        };
+
+    Funções de comparação:
+        Também é possível oferecer uma função de comparação externa para função sorte como uma função de retorno de chamada (callback function). Por exemplo, a seguinte função de comparação comp ordena strings primeiramente pelo tamanho e secundariamente pela ordem alfabética:
+
+        bool comp(string a, string b) {
+            if(a.size() != b.size()) return a.size() < b.size();
+            return a < b;
+        }
+
+        Agora, um vetor de strings pode ser ordenado dessa forma:
+
+        sort(v.begin(), v.end(), comp);
+
+    Busca binária:
+        Um método padrão para procurar um elemento em um array é usar um laço for que percorre os elementos do array. Por exemplo, o seguinte código procura se um elemento x está no array:
+
+        for(int i = 0; i < n; ++i){
+            if(x == array[i]){
+                // x encontrado no index i
+            }
+        }
+
+        A complexidade de tempo dessa abordagem é O(n), porque no pior caso é necessário checar todos os elementos do array. Se a ordem dos elementos for arbitrária, então essa é a melhor abordagem possível, pois não há informações adicionais disponíveis sobre onde no array devemos procurar pelo elemento x.
+        Por outro lado, se o array estiver ordenado, a situação é diferente. Nesse caso, é possível performar a procura de maneira muito mais rápida, porque oa ordem dos elementos no array guia a procura. Os seguintes algoritmos de busca binária procuram eficientemente por um elemento em um array ordenado em um tempo de O(logn).
+
+        ->Método 1:
+            A maneira usual de se implementar a busca binária se assemelha a procurar uma palavra em um dicionário. A procura mantém uma região ativa no array, que inicialmente contém todos os elementos do array. Em seguida, um certo número de passos é realizado, cada um dos quais reduz pela metade o tamanho da região.
+            Em cada etapa, a busca verifica o elemento do meio da região ativa. Se o elemento do meio for o elemento procurado, então a busca termina. Caso contrário, a busca continua recursivamente na metade esquerda ou direita da região, dependendo do valor do elemento do meio.
+            A ideia acima pode ser implementada da seguinte maneira:
+
+            int a  = 0, b = n-1;
+            while(a <= b){
+                int k = (a+b)/2;
+                if(array[k] == x){
+                    //x encontrado no índice k
+                }
+                if(array[k] > b) b = k-1;
+                else a = k+1;
+            }
+            
+            Nessa implementação, a região ativa é a...b, e inicialmente a região é 0...n-1. O algoritmo reduz pela metade o tamanho da região a cada etapa, então a complexidade de tempo é O(logn).
+
+        ->Método 2:
+            Um método alternativo de implementa a busca binário é baseado em uma maneira eficiente de percorrer os elementos do array. A ideia é fazer saltos e diminuir a velocidade quando se está mais perto do elemento-alvo.
+            A busca percorre o array da esquerda para a direita, e o comprimento inicial do salto é n/2. Em cada etapa, o comprimento do salto será dividido pela metade: primeiro n/4, depois n/8, n/16, etc., até que finalmente o comprimento seja 1. Após os saltos, ou o elemento-alvo foi encontrado, ou sabemos que ele não aparece no array.
+            O seguinte código implementa a ideia acima:
+
+            int k = 0;
+            for(int b = n/2; b >= 1; b/=2){
+                while(k+b < n && array[k+b]<=x) k+=b;
+            }
+            if(array[k] == x){
+                // x encontrado no índice k
+            }
+
+            Durante a busca, a variável b contém o tamanho do salto atual. A complexidade de tempo do algoritmo é O(logn), pois o código no laço while é executado no máximo duas vezes para cada comprimento de salto.
+
+    Funções do C++:
+        A biblioteca padrão do C++ contém as seguintes funções que são baseadas em busca binária e funcionam em tempo logarítmico:
+        ->lower_bound retorna um ponteiro para o primeiro elemento cujo valor é pelo menos x.
+        ->upper_bound retorna um ponteiro para o primeiro elemento cujo valor seja maior que x.
+        ->equal_range retorna os dois ponteiros acima.
+
+        As funções assumem que o array está ordenado. Se não houver tal elemento, o ponteiro aponta para o elemento após o último elemento do array. Por exemplo, o seguinte código determina se um array contém um elemento com valor x:
+
+        auto k = lower_bound(array, array+n, x) - array;
+        if(k < n && array[k]==x){
+            //x encontrado no índice k
+        }
+        
+        Então, o código a seguir conta o número de elementos cujo valor é x:
+        
+        auto a = lower_bound(array, array+n, x);
+        auto b = upper_bound(array, array+n, x);
+        cout << b-a << "\n";
+
+        Usando equal_range, o código se torna menor:
+
+        auto r = equal_range(array, array+n, x);
+        cout << r.second-r.first << "\n";
+
+    Encontrando a menor solução:
+        Um importante uso da busca binária é encontrar a posição onde o valor de uma função muda. Suponha que desejamos encontrar o menor valor k que é uma solução válida para um problema. Nós temos uma função "ok(x)" que retorna verdadeiro se x for uma solução válida e falso caso contrário. Além disso, sabemos que "ok(x)" é falso quando x < k e verdadeiro quando x >= k. A situação é a seguinte:
+
+        x     | 0       1   ...   k-1      k    k+1   ...
+        ok(x) |false false  ... false   true   true   ...
+
+        Agora, o valor de k pode ser encontrado usando busca binária:
+
+        int x = -1;
+        for(int b = z; b >= 1; b/=2){
+            while (!ok(x+b)) x+=b;
+        }
+        int k = x+1;
+
+        A busca encontra o maior valor de x para o qual ok(x) é falso. Portanto, o próximo valor k = x+1 é o menor valor possível para o qual ok(k) é verdadeiro. O tamanho inicial do salto, z, deve ser suficientemente grande, por exemplo, algum valor para o qual sabemos de antemão que ok(z) é verdadeiro.
+        O algoritmo chama a função ok O(log z) vezes, portanto, a complexidade de tempo total depende da função ok. Por exemplo, se a função funciona em tempo O(n), a complexidade de tempo total é O(n log z).
+
+    Encontrando o valor máximo:
+        Busca binária também pode ser usada para encontrar o valor máximo de uma função que primeiro aumenta e depois diminui. Nossa tarefa é encontrar uma posição k tal que:
+        -> f(x) < f(x+1) quando x < k, e
+        -> f(x) > f(x+1) quando x >= k.
+
+        A ideia é usar busca binária para encontrar o maior valor de x para o qual f(x) < f(x+1). Isso implica que k = x=1, porque f(x+1) > f(x+2). O seguinte código implementa a busca:
+        
+        int x = -1;
+        for(int b = z; b >= 1; b /= 2){
+            while(f(x+b) < f(x+b+1)) x+= b;
+        }
+        int k = x+1;
+
+        Observe que, ao contrário da busca binária comum, aqui não é permitido que valores consecutivos da função sejam iguais. Nesse caso, não seria possível saber como continuar a busca.
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 4:

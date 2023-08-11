@@ -4,5 +4,6 @@
         "iomanip": "cpp",
         "ostream": "cpp",
         "*.tcc": "cpp"
-    }
+    },
+    "cSpell.language": "en,pt-BR"
 }
