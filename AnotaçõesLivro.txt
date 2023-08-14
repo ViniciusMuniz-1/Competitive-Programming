@@ -592,3 +592,382 @@ Capítulo 3:
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Capítulo 4:
+
+->Estruturas de dados:
+    Uma estrutura de dado é uma maneira de se armazenar dados na memória do computador. É importante escolher uma estrutura de dado apropriada para o problema, porque cada estrutura possui suas próprias vantagens e desvantagens. A questão crucial é: quais operações são eficientes na estrutura de dado escolhida?
+    Esse capítulo introduz as mais importantes estruturadas de dados que estão na biblioteca padrão do C++. É uma boa ideia usar a biblioteca padrão sempre que possível, porque isso salva tempo. Mais tarde nesse livro, aprenderemos mais sobre estruturas de dados mais sofisticadas que não estão disponíveis na biblioteca padrão.
+
+    Array dinâmicos:
+        Um array dinâmico é um array qual pode ter seu tamanho alterado durante a execução do programa. O array dinâmico mais popular em C++ é a estrutura vector, qual pode ser usada praticamente como um array qualquer.
+        O seguinte código cria um vector vazio e adiciona 3 elementos nele:
+
+        vector<int> vi;
+        vi.push_back(3); //[3]
+        vi.push_back(2); //[3,2]
+        vi.push_back(5); //[3,2,5]
+
+        Após isso, os elementos podem ser acessados como um array comum:
+
+        cout << v[0] << "\n"; //3
+        cout << v[1] << "\n"; //2
+        cout << v[2] << "\n"; //5
+
+        A função size returna a quantidade de elementos em um vector. O seguinte código percorre o vector e imprime todos os elementos nele:
+
+        for(int i = 0; i < vi.size(); i++){
+            cout << v[i] << "\n";
+        }
+
+        Uma maneira mais fácil de percorrer o array segue no código abaixo:
+
+        for(auto x : vi) {
+            cout << x << "\n";
+        }
+
+        A função back retorna o último elemento no vector, e a função pop_back remove o último elemento.
+
+        vector<int> vi;
+        v.push_back(5);
+        v.push_back(2);
+        cout << v.back() << "\n"; //2
+        v.pop_back();
+        cout << v.back() << "\n"; //5
+
+        O seguinte código cria um vetor com 5 elementos:
+
+        vector<int> v = {2,4,2,5,1};
+
+        Outra maneira de criar um vetor é dar o número de elemento e o valor inicial para cada elemento:
+
+        //tamanho 10, valor inicial 0
+        vector<int> vi(10);
+
+        //tamanho 10, valor inicial 5
+        vector<int> vi(10, 5);
+
+        A implementação interna de um vector utiliza um array comum. Se o tamanho de um vector aumentar e o array se tornar pequeno demais, um novo array com mais memória alocada é criado e todos os elementos são movidos para o novo array. No entanto, isso não acontece com frequência e a complexidade de tempo média do push_back é O(1).
+        A estrutura de string também é um array dinâmico que pode ser usado quase como um vector. Além disso, há uma sintaxe especial para as strings que não está disponível para as outras estruturas de dados. Strings podem ser combinadas usando o símbolo +. A função substr(k,x) retorna a substring que começa em k e possui tamanho x, e a função find(t) encontra a posição da primeira ocorrência da substring t.
+        O seguinte código apresenta algumas operações com strings:
+
+        string a  = "hatti";
+        string b = a+a;
+        cout << b << "\n"; //hattihatti
+        b[5] = 'v';
+        cout << b << "\n"; //hattivatti
+        string c = b.substr(3,4);
+        cout << c << "\n"; //tiva
+
+    Estruturas Set:
+        "Set" é uma estrutura de dado que mantém coleções de elementos. As operações básicas de sets são inserção de elemento, busca de elemento e remoção de elemento.
+        A biblioteca padrão do C++ contém 2 implementações da estrutura "set": A estrutura "set" baseada em uma árvore binária balanceada e suas operação funcionam em tempo O(log n). A estrutura "unordered_set" usa hashing, e suas operações funcionam em tempo O(1) em média.
+        A escolha de qual implementação de "set" usar muitas vezes é uma questão de gosto. O benefício da estrutura "set" é que ela mantém a ordem dos elementos e fornece funções que não estão disponíveis na "unordered_set". Por outro lado, "unordered_set" pode ser mais eficiente.
+        O seguinte código cria um "set" que contém inteiros, e mostra algumas operações. A função insert adiciona um elemento ao "set", a função count retorna o número de ocorrências de um elemento no "set" e a função erase remove um elemento do "set".
+
+        set<int> s;
+        s.insert(3);
+        s.inset(2);
+        s.insert(5);
+        cout << s.count(3) << "\n"; //1
+        cout << s.count(4) << "\n"; //0
+        s.erase(3);
+        s.insert(4);
+        cout << s.count(3) << "\n"; //0
+        cout << s.count(4) << "\n" //1
+
+        Um set pode ser usado como um vetor, mas não é possível acessar os elementos usando a notação []. O seguinte código cria um "set", imprime o número de elementos nele e percorre todos os elementos.
+
+        set<int> s = {2,5,6,8};
+        cout << s.size() << "\n"; //4
+        for(auto x : s){
+            cout << x << "\n";
+        }
+
+        Uma importante propriedade dos "sets" é que todos os elementos deles são distintos. Assim, a função count sempre retorna 0 (o elemento não está no "set") ou 1 (o elemento está no "set"), e a função insert nunca adiciona um elemento caso ele já esteja no "set". O seguinte código ilustra isso:
+
+        set<int> s;
+        s.insert(5);
+        s.insert(5);
+        s.insert(5);
+        cout << s.count(5) << "\n"; //1
+
+        C++ também contém as estruturas "multiset" e "unordered_multiset" que funcionam de forma semelhante a "set" e "unordered_set", mas podem conter múltiplas instâncias de um mesmo elemento. Por exemplo, no seguinte código todas as 3 instâncias do número 5 são adicionadas ao "multiset":
+
+        multiset<int> s;
+        s.insert(5);
+        s.insert(5);
+        s.insert(5);
+        cout << s.count(5) << "\n"; //3
+
+        A função erase remove todas as instâncias do elemento de um "multiset":
+        s.erase(5);
+        cout << s.count(5) << "\n"; //0
+
+        Muitas vezes, apenas uma instância pode ser removida, qual pode ser feito com o código abaixo:
+        
+        s.erase(s.find(5));
+        cout << s.count(5) << "\n"; //2
+
+    Estruturas Map:
+        Uma estrutura "map" é um array generalizado que consiste em pares chave-valor. Enquanto as chaves em um array comum são sempre inteiros consecutivos 0,1,...,n-1, onde n é o tamanho do array, as chaves no "map" podem ser de qualquer tipo de dado e não precisam ter valores consecutivos.
+        A biblioteca padrão do C++ contém 2 implementações para o "map" que correspondem as implementações do "set": a estrutura "map" baseada em uma árvore binária balanceada e que o acesso de elementos leva tempo O(log n), enquanto a estrutura "unordered_map" usa hashing e o acesso dos elemento leva tempo O(1) em média.
+        O seguinte código cria um "map" one as chaves são strings e os valores são inteiros:
+
+        map<string,int> m;
+        m["monkey"] = 4;
+        m["banana"] = 3;
+        m["harpsichord"] = 9;
+        cout << m["banana"] << "\n"; // 3
+
+        Se o valor da chave for requerido e o "map" não o conte, a chave é automaticamente adicionada ao "map" com o valor padrão. Por exemplo, no seguinte código, a chave "aybabtu" com valor 0 é adicionada ao "map":
+
+        map<string,int> m;
+        cout << m[aybabtu] << "\n"; // 0
+
+        A função count checa se existe uma chave no "map":
+
+        if(m.count(aybabtu)){
+            //chave existe
+        }
+
+        O seguinte código imprime todas as chaves e valores do "map":
+        
+        for(auto x : m){
+            cout << x.first << " " << x.second << "\n";
+        }
+
+    Iteradores e intervalos:
+        Muitas funções da biblioteca padrão do C++ operam com iteradores. Um iterador é uma variável que aponta para um elemento em uma estrutura de dado.
+        Os iteradores frequentemente usados begin e end definem o intervalo que contém todos os elementos de uma estrutura de dados. O iterador begin aponta para o primeiro elemento na estrutura de dados, e o iterador end aponta para a posição após o último elemento. A situação é a seguinte: 
+
+        { 3, 4, 6, 8, 12, 13, 14, 17 }
+          |                          |
+        s.begin()                   s.end()
+
+        Note a assimetria nos iteradores: s.begin() aponta para um elemento na estrutura de dados, enquanto s.end() aponta para fora da estrutura de dados. Portanto, o intervalo definido pelos iteradores é semi-aberto.
+
+        ->Trabalhando com intervalos:
+            Iterados usados em funções da biblioteca padrão do C++ que recebem um intervalo de elementos em uma estrutura de dados. Normalmente, queremos processar todos os elementos em uma estrutura de dados, então os iterados begin e end são fornecidos para a função.
+            Por exemplo, o seguinte código ordena um vector usando a função sort, então inverte a ordem dos elementos usando a função reverse, e finalmente embaralha a ordem dos elementos usando a função random_shuffle.
+
+            sort(v.begin(), v.end());
+            reverse(v.begin(), v.end());
+            random_shuffle(v.begin(), v.end());
+
+            Essas funções também podem ser utilizadas em um array comum. Nesse caso, as funções recebem ponteiros para o array ao invés de iteradores:
+
+            sort(a, a+n);
+            reverse(a, a+n);
+            random_shuffle(a, a+n);
+
+        ->Iteradores de Set:
+            Iteradores são frequentemente usados para acessar elemento de um "set". O seguinte código cria um iterador it que aponta para o menor elemento em um set:
+            
+            set<int>::iterator it = s.begin();
+
+            Uma maneira menor de escrever o mesmo código é a seguinte:
+
+            auto it = s.begin();
+
+            O elemento para qual o iterador aponta pode ser acessado usando o símbolo *. Por exemplo, o seguinte código imprime o primeiro elemento de um "set":
+
+            auto it = s.begin();
+            cout << *it << "\n";
+
+            Iteradores podem ser movidos usando os operado ++ (avançar) e -- (voltar), significando que o iterador se move para o próximo ou elemento anterior no "set". 
+            O seguinte código imprime todos os elementos de um "set" em ordem crescente:
+
+            for(auto it = s.begin(); it != s.end(); it++){
+                cout << *it << "\n";
+            }
+
+            O seguinte código imprime o maior elemento em um "set":
+
+            auto it = s.end(); it--;
+            cout << *it << "\n";
+
+            A função find(x) retorna um iterador que aponta para o elemento cujo valor é x. No entanto se "set" não possuir x, o iterador será igual ao end().
+
+            auto it = s.find(x);
+            if(it == s.end()){
+                // x não foi encontrado
+            }
+
+            A função lower_bound(x) retorna um iterador que aponta para o menor elemento de um "set" cujo valor é pelo menos x, e a função upper_bound(x) retorna um iterador para o menor elemento no "set" cujo valor é maior que x. Em ambas as funções, se tal elemento não existir, o valor de retorno será end. Essas funções não existem na estrutura unordered_set qual não mantém a ordem dos elementos.
+            Por exemplo, o seguinte código encontra o elemento mais próximo de x:
+
+            auto it = s.lower_bound(x);
+            if(it == s.begin()) {
+                cout << *it << "\n";
+            } else if(it == s.end()){
+                it--;
+                cout << *it << "\n";
+            } else{
+                int a = *it; it--;
+                int b = *it;
+                if(x-b < a-x) cout << b << "\n";
+                else cout << a "\n";
+            }
+
+            O código assume que o "set" não está vazio, e percorre todos os possíveis casos usando o iterador it. Primeiro, o iterador aponta para o menor elemento cujo valor é pelo menos x. Se it for igual a begin, o elemento correspondente é o mais próximo de x. Se it for igual a end, o maior elemento no set é o mais próximo de x. Se nenhum dos casos anteriores for verdadeiro, o elemento mais próximo de x será o elemento que corresponde a it ou ao elemento anterior.
+
+    Outras estruturas:
+        ->Bitset:
+            O "bitset" é um array cujo valor é 0 ou 1. Por exemplo, o seguinte código cria um bitset que contém 10 elementos:
+
+            bitset<10> s;
+            s[1] = 1;
+            s[3] = 1;
+            s[4] = 1;
+            s[7] = 1;
+            cout << s[4] << "\n"; //1
+            cout << s[5] << "\n"; //0
+
+            O benefício de usar bitsets é que precisa de menos memória que arrays comuns, porque cada elemento do bitset usa 1 bit de memória. Por exemplo, se n bits são armazenados em um array de inteiros, 32n bits de memória serão usados, mas um bitset correspondente só usa n bits de memória. Em adição, o valor de um bitset pode ser eficientemente manipulado usando operadores de bit, o que torna possível otimizar algoritmos usando conjuntos de bits.
+            O seguinte código mostra outra maneira de criar o bitset acima:
+            
+            bitset<10> s(string("0010011010)); //da direita para a esquerda
+            cout << s[4] << "\n"; //1
+            cout << s[5] << "\n"; //0
+
+            A função count retorna a quantidade de números 1 em um bitset:
+
+            bitset<10> s(string("0010011010"));
+            cout << s.count() << "\n"; //4
+
+            O seguinte código mostra exemplos de uso de operadores de bits:
+            
+            bitset<10> a(string("0010110110"));
+            bitset<10> b(string("1011011000"));
+            cout << (a&b) << "\n"; // 0010010000
+            cout << (a|b) << "\n"; // 101101110
+            cout << (a^b) << "\n"; //1001101110
+
+        ->Deque:
+            Deque é um array dinâmico cujo tamanho pode ser eficientemente alterado em ambas extremidades do array. Assim como um vector, uma "deque" fornece as funções push_back e pop_back, mas também inclui as funções push_front e pop_front quais não estão disponíveis para um vector.
+            Uma deque pode ser usada da seguinte forma:
+
+            deque<int> d;
+            d.push_back(5); // [5]
+            d.push_back(2); // [5, 2]
+            d.push_front(3); // [3, 5, 2]
+            d.pop_back();   // [3, 5]
+            d.pop_front(); //[5]
+
+            A implementação interna de uma deque é mais complexa que a deu um vector, e po essa razão, uma deque é mais lenta que um vector. Mesmo assim, adicionar ou remover elementos leva tempo O(1) em média para ambos os casos.
+
+        ->Pilha:
+            Uma pilha é uma estrutura de dado que fornece 2 operações em tempo O(1): adicionar um elemento ao topo e remover um elemento do topo. Isso só é acessar o elemento do topo de uma pilha.
+            O seguinte código mostra como uma pilha pode ser usada:
+
+            stack<int> s;
+            s.push(3);
+            s.push(2);
+            s.push(5);
+            cout << s.top(); //5
+            s.pop();
+            cout << s.top(); //5
+            s.pop();
+            cout << s.top(); //2
+
+        ->Fila:
+            Uma fila também fornece 2 operações em tempo O(1): adicionar um elemento ao final da fila e remover o primeiro elemento de uma fila. Só é possível acessar o primeiro e último elemento de uma fila.
+            O seguinte código mostra como uma fila pode ser usada:
+
+            queue<int> q;
+            q.push(3);
+            q.push(2);
+            q.push(5);
+            cout << q.front(); // 3
+            q.pop();
+            cout << q.front(); //2
+
+        ->Fila de prioridade:
+            A fila de prioridade sempre mantém um conjunto de elementos. As operações oferecidas são inserção e, dependendo do tipo de fila, busca e remoção do elemento mínimo ou máximo. Inserção e remoção levam tempo O(log n)m e busca leva tempo O(1).
+            Embora um "set" ordenado suporta eficientemente todas as operações de uma fila de prioridade, o benefício de se usar uma fila de prioridade é que possui menos fatores constantes. Uma fila de prioridade é normalmente implementada usando um estrutura heap que é muito mais simples que um árvore binária balanceada usada no "set" ordenado.
+            Por padrão, os elemento em uma fila de prioridade em C++ são ordenados em ordem decrescent, e é possível encontrar e remover o maior elemento na fila. O seguinte código ilustra isso:
+
+            priority_queue<int> q;
+            q.push(3);
+            q,push(5);
+            q.push(7);
+            q.push(2);
+            cout << q.top() << "\n'; // 7
+            q.pop();
+            cout << q.top() << "\n"; // 5
+            q.pop();
+            q.push(6);
+            cout << q.top() << "\n"; // 6
+            q.pop();
+
+            Se quisermos criar uma fila de prioridade que pode encontrar e remover o menor elemento, podemos fazer da seguinte forma:
+
+            priority_queue<int, vector<int>, greater<int>> q;
+
+        ->Estruturas de dados baseadas em políticas:
+            O compilador g++ também suporta estruturas de dados que não fazem parte da biblioteca padrão do C++. Tais estruturas são chamadas de estruturas de dados policy-based (baseadas em política). Para usar essas estruturas, as seguintes linhas precisam ser adicionadas ao código:
+            
+            #include <ext/pb_ds/assoc_container.hpp>
+            using namespace __gnu_pbds;
+
+            Após isso, podemos definir a estrutura de dados indexed_set que é como um "set", mas pode ser indexada como um array. A definição para um valor inteiro é a seguinte:
+
+            typdef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> indexed_set;
+
+            Agora podemos criar um "set" da seguinte forma:
+
+            indexed_set s;
+            s.insert(2);
+            s.insert(3);
+            s.insert(7);
+            s.insert(9);
+
+            A particularidade desse "set" é que temos acesso aos índices que os elementos teriam em um array ordenado. A função find_by_order retorna um iterador para o elemento em uma determinada posição:
+
+            auto x = s.find_by_order(2);
+            cout << *x << "\n"; //7
+
+            E a função order_of_key retorna a posição de um elemento dado:
+            
+            cout << s.order_of_key(7) << "\n"; // 2
+
+            Se o elemento não aparece no "set", então nós recebemos a posição que ele teria no "set":
+
+            cout << s.order_of_key(6) << "\n"; //2
+            cout << s.order_of_key(8) << "\n"; //3
+
+            Ambas as funções trabalham em tempo logarítmico.
+
+    Comparação com ordenação:
+        É frequentemente possível resolver problemas usando tanto estruturas de dados quanto ordenação. Às vezes, existem diferenças notáveis na eficiência real dessas abordagens, que podem estar ocultas em suas complexidades de tempo.
+        Vamos considerar um problema onde são dadas 2 listas A e B, ambas contendo n elementos. Nossa tarefa é calcular o número de elementos que pertencem a ambas as listas. Por exemplo, as listas
+
+        A = [5,2,8,9,4] e B = [3,2,9,5],
+
+        a resposta seria 3, porque os número 2, 5 e 9 pertencem a ambas as listas.
+        Uma solução direta para o problema é percorrer todos os pares de elementos em tempo O(n²), mas a seguir vamos focar em algoritmos mais eficientes.
+
+        ->Algoritmo 1:
+            Construímos um conjunto de elementos que aparecem em A, e após isso, percorremos os elementos de B e checamos se cada elemento também pertence a A. Isso é eficiente porque os elemento de A estão em um conjunto. Usando a estrutura "set", a complexidade de tempo do algoritmos é O(nlogn).
+        
+        ->Algoritmo 2:
+            Não é necessário manter o conjunto ordenado, então ao invés de usar a estrutura "set" podemos usar, também, a estrutura "unordered_set". Essa é uma maneira fácil de tornar o algoritmo mais eficiente, porque só precisamos alterar a estrutura de dados subjacente. A complexidade de tempo do novo algoritmo é O(n).
+
+        ->Algoritmo 3:
+            Ao invés de usar estruturas de dados, podemos usar ordenação. Primeiro, ordenamos ambas as listas A e B. Após isso, percorremos ambas as listas ao mesmo tempo e verificamos os elementos em comum. O tempo de complexidade da ordenação é O(nlogn), e o resto do algoritmo trabalha em tempo O(n), então o tempo total é O(nlog).
+
+        ->Comparação de eficiência:
+            A seguinte tabela mostra quão eficiente os algoritmos acima são quando n varia e os elementos das listas são inteiros aleatórios entre 1 e 10^9:
+
+              n|  Algoritmo 1 | Algoritmo 2 | Algoritmo 3
+           10^6|          1.5s|         0.3s|        0.2s
+         2*10^6|          3.7s|         0.8s|        0.3s
+         3*10^6|          5.7s|         1.3s|        0.5s
+         4*10^6|          7.7s|         1.7s|        0.7s
+         5*10^6|         10.0s|         2.3s|        0.9s
+
+            Os algoritmos 1 e 2 são iguais exceto que usam estruturas de "set" diferentes. Nesse problemas, essa escolha tem um importante efeito no tempo de execução, porque o algoritmo 2 é 4-5 vezes mais rápido que o primeiro.
+            De qualquer forma, o mais eficiente foi o algoritmo, qual usa ordenação. Ele apenas usa metade do tempo quando comparado com o algoritmo 2. Curiosamente, a complexidade tanto para o algoritmo 1 quanto para o algoritmo 3 é O(n log n), mas apesar disso, o algoritmo 3 é dez vezes mais rápido. Isso pode ser explicado pelo fato de que a ordenação é um procedimento simples e é feito apenas uma vez no início do algoritmo 3, e o restante do algoritmo funciona em tempo linear. Por outro lado, o algoritmo 1 mantém uma árvore binária balanceada complexa durante todo o algoritmo.
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 5:
