@@ -598,8 +598,8 @@ Capítulo 4:
     Esse capítulo introduz as mais importantes estruturadas de dados que estão na biblioteca padrão do C++. É uma boa ideia usar a biblioteca padrão sempre que possível, porque isso salva tempo. Mais tarde nesse livro, aprenderemos mais sobre estruturas de dados mais sofisticadas que não estão disponíveis na biblioteca padrão.
 
     Array dinâmicos:
-        Um array dinâmico é um array qual pode ter seu tamanho alterado durante a execução do programa. O array dinâmico mais popular em C++ é a estrutura vector, qual pode ser usada praticamente como um array qualquer.
-        O seguinte código cria um vector vazio e adiciona 3 elementos nele:
+        Um array dinâmico é um array qual pode ter seu tamanho alterado durante a execução do programa. O array dinâmico mais popular em C++ é a estrutura vetor, qual pode ser usada praticamente como um array qualquer.
+        O seguinte código cria um vetor vazio e adiciona 3 elementos nele:
 
         vector<int> vi;
         vi.push_back(3); //[3]
@@ -612,7 +612,7 @@ Capítulo 4:
         cout << v[1] << "\n"; //2
         cout << v[2] << "\n"; //5
 
-        A função size returna a quantidade de elementos em um vector. O seguinte código percorre o vector e imprime todos os elementos nele:
+        A função size returna a quantidade de elementos em um vetor. O seguinte código percorre o vetor e imprime todos os elementos nele:
 
         for(int i = 0; i < vi.size(); i++){
             cout << v[i] << "\n";
@@ -624,7 +624,7 @@ Capítulo 4:
             cout << x << "\n";
         }
 
-        A função back retorna o último elemento no vector, e a função pop_back remove o último elemento.
+        A função back retorna o último elemento no vetor, e a função pop_back remove o último elemento.
 
         vector<int> vi;
         v.push_back(5);
@@ -645,8 +645,8 @@ Capítulo 4:
         //tamanho 10, valor inicial 5
         vector<int> vi(10, 5);
 
-        A implementação interna de um vector utiliza um array comum. Se o tamanho de um vector aumentar e o array se tornar pequeno demais, um novo array com mais memória alocada é criado e todos os elementos são movidos para o novo array. No entanto, isso não acontece com frequência e a complexidade de tempo média do push_back é O(1).
-        A estrutura de string também é um array dinâmico que pode ser usado quase como um vector. Além disso, há uma sintaxe especial para as strings que não está disponível para as outras estruturas de dados. Strings podem ser combinadas usando o símbolo +. A função substr(k,x) retorna a substring que começa em k e possui tamanho x, e a função find(t) encontra a posição da primeira ocorrência da substring t.
+        A implementação interna de um vetor utiliza um array comum. Se o tamanho de um vetor aumentar e o array se tornar pequeno demais, um novo array com mais memória alocada é criado e todos os elementos são movidos para o novo array. No entanto, isso não acontece com frequência e a complexidade de tempo média do push_back é O(1).
+        A estrutura de string também é um array dinâmico que pode ser usado quase como um vetor. Além disso, há uma sintaxe especial para as strings que não está disponível para as outras estruturas de dados. Strings podem ser combinadas usando o símbolo +. A função substr(k,x) retorna a substring que começa em k e possui tamanho x, e a função find(t) encontra a posição da primeira ocorrência da substring t.
         O seguinte código apresenta algumas operações com strings:
 
         string a  = "hatti";
@@ -747,7 +747,7 @@ Capítulo 4:
 
         ->Trabalhando com intervalos:
             Iterados usados em funções da biblioteca padrão do C++ que recebem um intervalo de elementos em uma estrutura de dados. Normalmente, queremos processar todos os elementos em uma estrutura de dados, então os iterados begin e end são fornecidos para a função.
-            Por exemplo, o seguinte código ordena um vector usando a função sort, então inverte a ordem dos elementos usando a função reverse, e finalmente embaralha a ordem dos elementos usando a função random_shuffle.
+            Por exemplo, o seguinte código ordena um vetor usando a função sort, então inverte a ordem dos elementos usando a função reverse, e finalmente embaralha a ordem dos elementos usando a função random_shuffle.
 
             sort(v.begin(), v.end());
             reverse(v.begin(), v.end());
@@ -843,7 +843,7 @@ Capítulo 4:
             cout << (a^b) << "\n"; //1001101110
 
         ->Deque:
-            Deque é um array dinâmico cujo tamanho pode ser eficientemente alterado em ambas extremidades do array. Assim como um vector, uma "deque" fornece as funções push_back e pop_back, mas também inclui as funções push_front e pop_front quais não estão disponíveis para um vector.
+            Deque é um array dinâmico cujo tamanho pode ser eficientemente alterado em ambas extremidades do array. Assim como um vetor, uma "deque" fornece as funções push_back e pop_back, mas também inclui as funções push_front e pop_front quais não estão disponíveis para um vetor.
             Uma deque pode ser usada da seguinte forma:
 
             deque<int> d;
@@ -853,7 +853,7 @@ Capítulo 4:
             d.pop_back();   // [3, 5]
             d.pop_front(); //[5]
 
-            A implementação interna de uma deque é mais complexa que a deu um vector, e po essa razão, uma deque é mais lenta que um vector. Mesmo assim, adicionar ou remover elementos leva tempo O(1) em média para ambos os casos.
+            A implementação interna de uma deque é mais complexa que a deu um vetor, e po essa razão, uma deque é mais lenta que um vetor. Mesmo assim, adicionar ou remover elementos leva tempo O(1) em média para ambos os casos.
 
         ->Pilha:
             Uma pilha é uma estrutura de dado que fornece 2 operações em tempo O(1): adicionar um elemento ao topo e remover um elemento do topo. Isso só é acessar o elemento do topo de uma pilha.
@@ -971,3 +971,188 @@ Capítulo 4:
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Capítulo 5:
+
+    ->Busca completa:
+        Uma busca completa é um método geral que pode ser usado para resolver qualquer problema algorítmico. A ideia é gerar todas as possíveis soluções para o problema usando força bruta, então selecionar a melhor seleção ou contar o número de soluções, dependendo do problema.
+        A busca completa é uma boa técnica se existir tempo suficiente para percorrer todas as solução, porque a busca é mais fácil de implementa e na maioria das vezes dá a resposta correta. Se a busca completa for lenta demais, outras técnica, como o algoritmos gulosos ou programação dinâmica podem ser necessários.
+
+        ->Gerando subconjuntos:
+            Primeiro, consideramos o problema de gerar todos os subconjunto de um conjunto com n elementos. Por exemplo, os subconjuntos de {0,1,2} são 0, {0}, {1}, {2}, {0,1}, {0,2}, {1,2}e {0,1,2}. Existem dois métodos comuns de gerar todos os subconjuntos: nós podemos realizar uma busca recursiva ou explorar a representação binária de inteiros.
+            
+            ->Método 1:
+                Uma maneira elegante de percorrer todos os subconjuntos de um conjunto é usar recursividade. A seguinte função "search()" gera os subconjuntos do conjunto {0,1,...,n-1}. A função mantém um vetor "subset" que terá todos os elementos de cada subconjunto. A busca começa quando a função é chamada com o parâmetro 0.
+
+                void search(int k){
+                    if(k==n){
+                        // processa o subconjunto
+                    } else {
+                        search(k+1);
+                        subset.push_back(k);
+                        search(k+1);
+                        subset.pop_back();
+                    }
+                }
+
+                Quando a função "search" é chamada com o parâmetro k, ela decide se deve include o elemento k no subconjunto ou não, e em ambos os casos, ela chama a si mesma como o parâmetro k+1. No entanto, se k=n, a função percebe que todos os elementos foram processados e um subconjunto foi gerado.
+                A seguinte árvore ilustra a função chamada quando n = 3. Podemos sempre escolher ou o ramo esquerdo (k não está incluído no subconjunto) ou o ramo direito (k está incluído no subconjunto).
+
+                (imagem pg 58 pdf)
+
+            ->Método 2:
+                Outra maneira de gerar subconjuntos é baseado na representação binária de inteiros. Cada subconjunto de um conjunto de n elementos pode ser representado como uma sequência de n bits, qual corresponde a um inteiro entre 0 ... 2^n-1. Os "uns" na sequência de bits indicam quais elementos estão no conjunto.
+                A convenção usual é que o último bit corresponde ao elemento 0, o penúltimo bit corresponde ao elemento 1 e assim por diante. Por exemplo, a representação em bits de 25 é 11001, qual corresponde ao subconjunto {0,3,4}.
+                O seguinte código percorre todos os subconjuntos de um conjunto de n elementos:
+
+                for(int b = 0; b < (1<<n); b++){
+                    //processa o subconjunto
+                }
+
+                O código a seguir mostra como encontramos elementos de um subconjunto que corresponda a uma sequência de bits. Quando processamos cada subconjunto, o código constrói um vetor que contém os elemento no subconjunto.
+
+                for(int b = 0; b < (1<<b); b++){
+                    vector<int> subset;
+                    for(int i = 0; i < n; i++){
+                        if(b&(1<<i)) subset.push_back(i);
+                    }
+                }
+
+        ->Gerando permutações:
+            A seguir, consideramos o problema e gerar todas as permutações de um conjunto de n elementos. Por exemplo, as permutações de {0,1,2} é (0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1) e (2,1,0). Novamente, existem dois tipos de abordagens: podemos ou usar recursividade ou percorrer todas as permutações de forma interativa.
+
+            ->Método 1:
+                Como subconjuntos, permutações podem ser geradas usando recursividade. A seguinte função "search" percorre todas as permutações de um conjunto {0,1,...,n-1}. A função constrói um vetor "permutation" que contém a permutação, e a busca começa quando a função é chamada sem parâmetros.
+                
+                void search(){
+                    if(permutation.size() == n){
+                        // processa a permutação
+                    } else{
+                        for(int i = 0; i < n; i++){
+                            if(chosen[i]) continue;
+                            chosen[i] = true;
+                            permutation.push_back(i);
+                            search();
+                            chosen[i] = false;
+                            permutation.pop_back();
+                        }
+                    }
+                }
+
+                Cada chamada de função adiciona um novo elemento ao vetor "permutation". O array "chosen" indica quais elementos já foram incluídos na permutação. Se o tamanho de "permutation" for igual ao tamanho do conjunto, a permutação foi gerada.
+
+            ->Método 2:
+                Outro método de gerar permutações é começar com a permutação (0,1,...,n-1) e repetidamente usar a função que constrói a próxima permutação na ordem crescente. A biblioteca padrão do C++ contém a função "next_permutation" que pode ser usada para isso:
+                
+                vector<int> permutation;
+                for(int i = 0; i < n; i++){
+                    permutation.push_back(i);
+                }
+                do{
+                    //processa a permutação
+                } while(next_permutation(permutation.begin(), permutation.end()));
+
+        ->Backtracking:
+            Um algoritmo de backtracking começa com uma solução vazia e a estende passo a passo. A busca recursiva percorre todas os diferentes maneiras de como a solução pode ser construída.
+            Como exemplo, considere o problema de calcular o número de maneiras em que n rainhas possam ser colocadas em um tabuleiro de xadrez n x n de forma que nenhuma das rainhas não ataque as outras. Por exemplo, quando n = 4, existem duas possíveis soluções:
+
+            (imagens pg 60 pdf).
+
+            O problema pode ser resolvido usando a técnica de backtracking, colocando as rainhas no tabuleiro linha por linha. Mais precisamente, exatamente uma rainha será colocada em cada linha, de modo que nenhuma rainha ataque qualquer uma das rainhas colocadas anteriormente. Uma solução é encontrada quando todas as n rainhas foram colocadas no tabuleiro.
+            Por exemplo, quando n = 4, algumas soluções parciais geradas pelo algoritmo backtracking seriam da seguinte forma:
+
+            (imagens pg 60 pdf).
+
+            No nível mais abaixo, as 3 primeiras configurações são ilegais, porque as rainhas se atacam. No entanto, a quarta configuração é válida e pode se estender para uma solução completa colocado mais 2 rainhas no tabuleiro. Existe apenas uma maneira de colocar as 2 rainhas restantes.
+            O algoritmo pode ser implementado da seguinte forma:
+
+            void search(int y){
+                if(y == n){
+                    count++
+                    return;
+                }
+                for(int x = 0; x < n; x++){
+                    if(column[x] || diag1[x+y] || diag2[x-y+n-1]) continue;
+                    column[x] = diag1[x+y] = diag2[x-y+n-1] = 1;
+                    search(y+1);
+                    column[x] = diag1[x+y] = diag2[x-y+n-1] = 0;
+                }
+            }
+
+            A busca começa chamando "search(0)". O tamanho do tabuleiro é n × n, e o código calcula o número de soluções em "count".
+            O código assume que as linhas e colunas do tabuleiro foram numerada de 0 até n-1. Quando a função "search" é chamada com parâmetro y, colocando uma rainha na linha y e chamando ela mesma com o parâmetro y+1. Então, se y = n, a solução foi encontrada e a variável "count" é incrementada em um.
+            O array "column" mantém o controle das colunas que contém uma rainha, e os arrays diag1 e diag2 mantêm o controle das diagonais. Não é permitido adicionar outra rainha a uma coluna ou diagonal que já contenha uma rainha. Por exemplo, as colunas e diagonais de um tabuleiro 4x4 pode ser numerada da seguinte forma:
+
+            (imagem pg 61 pdf)
+
+            Deixe q(n) denotar o número de maneiras de colocar n rainhas em um tabuleiro de xadrez n x n. O algoritmo de backtracking acima nos diz, por exemplo, q(8) = 92. Quando n aumenta, a busca rapidamente se torna lenta, porque o número de soluções cresce exponencialmente. Por exemplo, calculando q(16) = 14772512 usando o algoritmo acima leva cerca de um minuto em um computador moderno. 
+
+        ->Podando a busca:
+            Podemos frequentemente otimizar o backtracking podando a árvore de busca. A ideia é adicionar "inteligência" ao algoritmo, para que ele note o mais cedo possível que a solução parcial não pode ser estendida em uma solução completa. Essas otimizações podem ter um efeito significativo na eficiência da busca.
+            Consideremos o problema de calcular o número de caminhos em uma grade n x n, do canto superior esquerdo ao canto inferior direito, de forma que o caminho visite cada quadrado exatamente uma vez. Por exemplo, um gride 7x7, teria 111712 possíveis caminhos. Um dos caminhos é o seguinte:
+
+            (imagem pg 62 pdf)
+
+            Focaremos no caso 7x7, porque é um nível de dificuldade apropriado para nossas necessidades. Começamos com uma solução direta com um algoritmo backtracking, e então otimizaremos passo a passo utilizando observações de como a busca pode ser podada. Após cada otimização, mediremos o tempo de execução do algoritmo e o número de chamadas recursivas, dessa maneira podemos ver claramente os efeitos de otimização e a eficiência da busca.
+
+            ->Algoritmo básico:
+                A primeira versão do algoritmos não contém otimizações. Nós simplesmente utilizaremos backtracking para gerar todos os possíveis caminhos do canto superior esquerdo até o canto inferior direito e contar o número de caminhos possíveis.
+                • Tempo de execução: 483 segundos
+                • Número de chamadas recursivas: 76 bilhões
+
+            ->Otimização 1:
+                Em qualquer solução, primeiro movemos um passo para baixo ou direita. Sempre existem dois caminhos que são simétricos em relação à diagonal da grade após o primeiro passo. Por exemplo, os seguintes caminhos são simétricos:
+
+                (imagens pag 62)
+
+                Portanto, podemos decidir que sempre damos o primeiro passo para baixo (ou para direita) e, finalmente, multiplicamos o número de soluções por dois.
+
+                • Tempo de execução: 244 segundos
+                • Número de chamadas recursivas: 38 bilhões
+
+            ->Otimização 2:
+                Se o caminho chegar ao quadrado inferior direito antes de ter visitado todos os outros quadrados do gride, está claro que não é possível obter uma solução completa. Um exemplo disso é o seguinte caminho:
+
+                (imagem pag 63)
+
+                Usando essa observação, podemos finalizar a busca imediatamente se chegarmos no quadrado inferior direito muito cedo.
+                
+                • Tempo de execução: 119 segundos
+                • Número de chamadas recursivas: 20 bilhões
+
+            ->Otimização 3:
+                Se o caminho tocar uma parede e puder virar para a direita ou esquerda, a grade e divide em duas partes que contém quadrados não visitados. Por exemplo, a seguinte situação, o caminho pode virar ou para esquerda ou para a direita:
+
+                (imagem pag 63 pdf)
+
+                Nesse caso, nós não podemos mais visitar todos os quadrados, então podemos finalizar a busca. A otimização é muito útil:
+
+                • Tempo de execução: 1.8 segundos
+                • Número de chamadas recursivas: 221 milhões
+
+            ->Otimização 4:
+                A ideia da otimização 3 pode ser generalizada: se o caminho não pode continuar para a frente, mas pode virar para a esquerda ou para a direita, a grade se divide em duas partes que contêm quadrados não visitados. Por exemplo, considere o seguinte caminho:
+
+                (imagem pag 64 pdf)
+
+                Está claro que não podemos mais visitar todos os quadrado, então podemos finalizar a busca. Após essa otimização, a busca se torna muito eficiente:
+                
+                • Tempo de execução: 0.6 segundos
+                • Número de chamadas recursivas: 69 milhões
+
+                Agora é um bom momento para parar de otimizar o algoritmo e ver o que conquistamos. O tempo de execução originar do algoritmo era de 483 segundos, e agora, após as otimizações, o tempo de execução é de apenas 0.6 segundos. Assim, o algoritmo se tornou cerca de 1000 vezes mais rápido após as otimizações.
+                Isso é um fenômeno comum em backtracking, porque a árvore de busca geralmente é grande e até mesmo observações simples podem efetivamente podar a busca. Otimizações que ocorrem durante os primeiros passos do algoritmo, ou seja, no topo da árvore de busca, são especialmente úteis.
+
+            ->Meet in the middle(encontro no meio):
+                Meet in the middle(encontro no meio) é uma técnica onde o espaço de busca é dividido em duas partes de tamanho aproximadamente igual. Uma busca separada é performada em ambas as partes, e finalmente os resultados das buscas são combinados.
+                A técnica pode ser usada se houver uma maneira eficiente de combinar o resultado das buscas. Em tal situação, as duas buscas devem exigir menos tempo que uma grande busca. Normalmente, podemos tornar o fator 2^n em um fator 2^n/2 usando a técnica "meet in the middle".
+                Como exemplo, considere um problema em que temos uma lista de n números e um número x, e queremos descobrir se é possível escolher alguns números da lista de forma que a soma deles seja x. Por exemplo, dada a lista [2,4,5,9] e x = 15, podemos escolher os números [2,4,9] para obter 2+4+9 = 14. No entanto, se x = 10 na mesma lista, não é possível formar a soma.
+                Um simples algoritmo para o problema é percorrer todos os subconjuntos dos elementos e verificar se a soma em algum dos subconjuntos é x. O tempo de execução de tal algoritmo é O(2^n), por que existirão 2^n subconjuntos. No entanto, usando a técnica "meet in the middle", podemos alcançar um tempo mais eficiente, esse sendo O(2^n/2). Note que O(2^n) e O(2^n/2) são complexidade diferente porque 2^n/2 é igual a √(2^n).
+                A ideia é dividir a lista em duas listas A e B tal que duas listas contenham cerca de metade dos números. A primeira busca gera todos os subconjuntos de A e armazena suas somas em uma lista SA. De maneira correspondente, a segunda busca cria uma lista SB a partir de B. Após isso, é suficiente verificar se é possível escolher um elemento de SA e outro elemento de SB de forma que a soma deles seja x. Isso é possível exatamente quando há uma maneira de formar a soma x usando os números da lista original.
+                Por exemplo, suponha que a lista seja [2,4,5,9] e x = 15. Primeiro, dividimos a lista em A = [2,4] e B = [5,9]. Após isso, criamos SA = [0,2,4,6] e SB = [0,5,9,14]. Nesse caso, a soma x = 15 é possível de ser formada, porque SA contém o número 6, SB contém o número 9, e 6+9=15. Isso corresponde a solução [2,4,9].
+                Podemos implementar o algoritmo de forma que sua complexidade de tempo seja O(2^n/2). Primeiro, geramos listas ordenadas SA e SB, o que pode ser feito em tempo O(2^n/2) usando uma técnica semelhante a merge. Depois disso, como as listas estão ordenadas, podemos verificar em tempo O(2^n/2) se a soma x pode ser criada a partir de SA e SB.
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 6:
+
+    ->Algoritmos gulosos:
+    
