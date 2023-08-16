@@ -1155,4 +1155,198 @@ Capítulo 5:
 Capítulo 6:
 
     ->Algoritmos gulosos:
+        Um algoritmo guloso constrói a solução para o problema sempre fazendo a escola que parece a melhor para o momento. Um algoritmo guloso nunca desfaz suas escolhas, mas constrói diretamente a solução final. Por essa razão, algoritmos gulosos são muito eficientes normalmente.
+        A dificuldade em projetar um algoritmo guloso é encontrar a estratégia que sempre produz uma ótima solução para o problema.  As escolhas localmente ótimas em um algoritmo guloso também devem ser globalmente ótimas. É frequentemente difícil argumentar que um algoritmo guloso funciona.
+
+        ->Problema da moeda:
+            Como primeiro exemplo, consideremos um problema onde dado um conjunto de moedas, nossa tarefa é formar a soma de dinheiro "n" usando as moedas. Os valores das moedas são coins={c1,c2,...,ck}, e cada moeda pode ser usada quantas vezes quisermos. Qual o menor número de moedas necessário?
+            Por exemplo, se as moedas são euros (em centimos)
+
+            {1,2,5,10,20,50,100,200}
+
+            e n = 520, nós precisaremos de pelo menos 4 moedas. A solução ótima é selecionar as moedas 200 + 200 + 100 + 20 cuja soma é 520.
+
+            ->Algoritmo guloso:
+                Um simples algoritmo guloso para o problema sempre seleciona a maior moeda possível, até que a soma requisitada tenha sido construída. Esse algoritmo funciona no caso de exemplo, porque primeiro selecionamos 2 moedas de 200 centimos, então uma de 100 centimos e, finalmente uma de 20 centimos. Mas esse algoritmo sempre funciona?
+                Acontece que se as moedas forem as moedas de euro, o algoritmo guloso sempre funciona, ou seja, ele sempre produz uma solução ótima com o menor número possível de moedas. 
+                A correção do algoritmo pode ser mostrada da seguinte forma:
+                Primeiro, cada moeda 1, 5, 10, 50, e 100 aparece no máximo uma vez em uma solução ótima, porque se a solução contivesse duas moedas desse tipo, nós poderíamos repor por uma única moeda e obter uma solução melhor. Por exemplo, se a solução contém moedas 5+5, podemos substituí-la por uma moeda de 10.
+                No mesmo sentido, moedas de 2 e 20 aparecem no máximo duas vezes em uma solução ótima, porque podemos substituir as moedas 2 + 2 + 2 pelas moedas 5 + 1 e as moedas 20 + 20 + 20 pelas moedas 50 + 10. Além disso, uma solução ótima não pode conter moedas 2 + 2 + 1 ou 20 + 20 + 10, porque poderíamos substituí-las por moedas de 5 e 50.
+                Usando essas observações, mostra-se que para cada moeda x que não é possível construir de maneira otimizada uma soma x ou qualquer soma maior usando apenas moedas menores que x. Por exemplo, se x = 100, a maior soma otimizada usando as moedas menores é 50 + 20 + 20 + 5 + 2 + 2 = 99. Assim, o algoritmo guloso sempre seleciona a maior moeda para produzir uma solução ótima.
+                Esse exemplo mostra que pode ser difícil argumentar que um algoritmo guloso funciona, mesmo se o algoritmo em si for simples.
+
+            ->Caso geral:
+                No caso geral, o conjunto de moedas pode conter quaisquer moedas e o algoritmo guloso não necessariamente produz uma solução ótima.
+                Podemos provar que um algoritmo guloso não funciona mostrando um contraexemplo onde o algoritmo fornece uma resposta errada. Nesse problema, podemos facilmente encontrar um contraexemplo: se as moeda forem {1,3,4}, e a soma é 6, o algoritmo guloso produz a solução 4+1+1 enquanto a solução ótima é 3+3.
+                Não se sabe se o problema geral da moeda pode ser resolvido usando qualquer algoritmo guloso. No entanto, como veremos no capítulo 7, em alguns casos, o problema geral pode ser eficientemente resolvido usando um algoritmo de programação dinâmica que sempre nos dá a resposta correta.
+        
+        ->Agendamento:
+            Muitos problemas de agendamento podem ser resolvidos usando algoritmos gulosos. Um clássico é o problema seguinte: dado n eventos com seus horários de início e fim, encontre a agenda que inclui o máximo de eventos possíveis. Não é possível selecionar parcialmente um evento. Por exemplo, considere os seguintes eventos:
+
+            evento  |  horário de início  |  horário de fim
+              A     |          1          |        3
+              B     |          2          |        5
+              C     |          3          |        9
+              D     |          6          |        8
+
+            Nesse caso, o máximo de evento é 2. Por exemplo, podemos selecionar os eventos B e D como segue:
+
+            (imagem 1 pg 69 pdf)
+
+            É possível criar vários algoritmo gulosos para o problema, mas qual deles funciona em todos os casos?
+
+            ->Algoritmo 1:
+                A primeira ideia é selecionar eventos o mais curto possíveis. No caso exemplo, esse algoritmo seleciona os seguintes eventos:
+
+                (imagem 2 pg 69 pdf)
+
+                No entanto, selecionar os eventos mais curtos não é sempre a estratégia correta. Por exemplo, se o algoritmo cair no seguinte caso:
+
+                (imagem 3 pg 69 pdf)
+
+                Se selecionarmos o evento mais curto, apenas selecionaríamos um evento. No entanto, seria possível selecionar ambos os eventos longos.
+
+            ->Algoritmo 2:
+                Outra ideia é sempre selecionar o próximo possível evento que começa o mais cedo possível. Esse algoritmo seleciona os seguintes eventos:
+
+                (imagem 4 pg 69 pdf)
+
+                No entanto, podemos encontrar, também, um contraexemplo para esse algoritmo. Por exemplo, no seguinte caso, o algoritmo selecionaria apenas um evento:
+
+                (imagem 5 pg 69 pdf)
+
+                Se selecionarmos o primeiro evento, não é possível selecionar nenhum dos outros eventos. No entanto, seria possível selecionar os outros 2 eventos.
+
+            ->Algoritmo 3:
+                A terceira ideia é sempre selecionar o próximo evento possível que termina o mais cedo possível. O algoritmo seleciona os seguintes eventos:
+
+                (imagem 1 pg 70 pdf)
+
+                Descobriu-se que esse algoritmo sempre produz uma solução ótima. A razão para isso é que é sempre uma escolha ótima selecionar primeiro um evento que termine o mais cedo possível. Após isso, é uma ótima escolha selecionar o próximo evento usando a mesma estratégia, etc., até não pudermos selecionar mais evento algum.
+                Uma maneira de argumentar que o algoritmo funciona é considerar o que acontece se primeiro selecionarmos um evento que termina mais tarde do que o evento que termina o mais cedo possível. Agora, teremos no máximo um número igual de opções sobre como podemos selecionar o próximo evento. Portanto, selecionar um evento que termina mais tarde nunca pode levar a uma solução melhor, e o algoritmo guloso é correto.
+        
+        ->Tarefas e prazos:
+            Consideremos um problema onde dada n tarefas com duração e prazos, nossa tarefa é escolher um ordem para performar as tarefas. Para cada tarefa, conseguimos d-x pontos onde d é o prazo da tarefa e x o momento em que finalizamos a tarefa. Qual a pontuação máxima que é possível obter?
+            Por exemplo, suponha que as tarefas sejam as seguintes:
+
+            tarefa | duração | prazo
+               A   |    4    |  2
+               B   |    3    |  5
+               C   |    2    |  7
+               D   |    4    |  5
+
+            Nesse caso, um cronograma ótimo para as tarefas é o seguinte:
+
+            (imagem 3 pg 70 pdf)
+
+            Nessa solução, C rende 5 pontos, B rende 0 pontos, A rende -7 pontos e D rende -8 pontos, então resultando uma pontuação de -10.
+            Surpreendentemente, a solução ótima para o problema não depende dos prazos, mas uma estratégia gananciosa correta é simplesmente realizar as tarefas ordenadas por suas durações em ordem crescente. A razão para isso é que se realizarmos 2 tarefas consecutivamente tal que a primeira leva mais tempo que a segunda, podemos obter uma melhor solução se trocarmos as tarefas de posição. Por exemplo, considere o seguinte cronograma:
+
+            (imagem 1 pg 71 pdf)
+
+            Aqui a > b, então se trocarmos as tarefas:
+
+            (imagem 2 pg 71 pdf)
+
+            Agora, X fornece b ponto A menos e Y fornece a pontos a mais, então a pontuação total aumenta por a - b > 0. Em uma solução ótima, para quaisquer 2 tarefas consecutivas, é realizar a tarefa menor antes da tarefa maior. Assim, as tarefas podem ser ordenadas pelas suas durações.
+
+        ->Minimizando somas:
+            Consideremos agora o problema em que dados n números, a1, a2, ..., an, nossa tarefa é encontrar um valor x que minimize a soma
+            | a1 - x | ^ C + | a2 - x | ^ C + ... + | an - x | ^ C
+
+            Vamos focar nos casos em que c = 1 e c = 2.
+
+            ->Caso c = 1
+                Nesse caso, nós devemos minimizar a soma 
+                | a1 - x | + | a2 - x | + ... + | an - x |
+
+                Por exemplo, se os números forem [1,2,9,2,6], a melhor solução é selecionar x = 2, que produz a soma
+                |1-2| + |2-2| + |9-2| + |2-2| + |6-2| = 12
+
+                No caso geral, a melhor escolha é que x seja a mediana dos números, ou seja, o número do meio após a ordenação. Por exemplo, a lista [1,2,9,2,6] se torna [1,2,2,6,9] após a ordenação, então a mediana é 2.
+                A mediana é a escolha ótima, porque se x é menor que a mediana, a soma se torna menor aumentando x, e se x é menor que a medina, a soma se torna menor diminuindo x. Portanto, a solução ótima é x ser a mediana. Se n for par e existirem duas medianas, ambas as medianas e todos os valores entre elas são ótimas escolhas.
+
+            ->Caso c = 2
+                Nesse caso, devemos minimizar a soma
+                (a1-x)² + (a2-x)² + ... + (an - x)²
+
+                Por exemplo, se os números forem [1,2,9,2,6], a melhor solução seria selecionar 4, qual produz a soma
+
+                (1-4)² + (2-4)² + (9-4)² + (2-4)² + (6-4)² = 46
+
+                No caso geral, a melhor escolha para x éa média dos números. No exemplo, a média é (1+2+9+2+6)/5 = 4. Esse resultado pode ser obtido apresentando a soma da seguinte forma:
+
+                (fórmula 1 pg 72 pdf)
+
+                A última parte não depende de x, então podemos ignorá-la. As partes restantes formam uma função nx² -2xs onde s = a1+a2+...+an. Isso é uma parábola que se abre para cima, com raízes x = 0 e x = 2s/n, e o valor mínimo é a média das raízes x = sn, ou seja a média dos números a1, a2, ..., an.
+
+        ->Compressão de dados:
+            Um código binário atribui a cada caractere de uma sequência uma palavra-código que consiste em bits. Podemos comprimir a string usando o código binário substituindo cada caractere para a palavra-código correspondente. Por exemplo, o seguinte código binário atribui palavras-código para os caracteres A-D:
+
+            caractere | palavra-código
+                    A |             00
+                    B |             01
+                    C |             10
+                    D |             11
+
+            Este é um código de tamanho constante, o que significa que o tamanho de cada palavra-código é o mesmo. Por exemplo, podemos comprimir a sequência AABACDACA da seguinte forma:
+
+            000001001011001000
+
+            Usando esse código, o tamanho da string comprimida é de 18 bits. No entanto, podemos comprimir melhor a string se usarmos um código de tamanho variável, onde as palavras-código podem ter diferentes tamanhos. Assim, podemos dar palavras de código curtas para caracteres que aparecem frequentemente e palavra-código longas para caracteres que aparecem raramente. Descobre-se que um código ótimo para a string acima é o seguinte:
+
+            caractere | palavra-código
+                    A |              0
+                    B |            110
+                    C |             10
+                    D |            111
+
+            Um código ótimo produz uma string comprimida que é a mais curta possível. Neste caso, a string comprimida usando o código ótimo é:
+
+            001100101110100,
+            
+            então apenas 15 bits são necessários ao invés de 18. Assim, graças ao código melhorado, é possível salva 3 bits em uma string comprimida.
+            Nós exigimos que nenhuma palavra-código seja um prefixo de outra palavra-código. Por exemplo, não é permitido que um código contenha as palavras-código 10 e 1011. A razão para isso é que queremos ser capazes de gerar a string original a partir da string comprimida. Se uma palavra-código pudesse ser um prefixo de outra palavra-código, isso nem sempre seria possível. Por exemplo, o seguinte código não é válido:
+
+            caractere | palavra-código
+                    A |             10
+                    B |             11
+                    C |           1011
+                    D |            111
+                
+            Usando esse código, não seria possível saber se a string comprimida 1011 corresponde a AB ou C.
+
+            ->Código de Huffman:
+                O código de Huffman é um algoritmo guloso que constrói um ótimo código para comprimir uma dada string. O algoritmo constrói uma árvore binária baseada na frequência dos caracteres na string, e cada palavra-código do caractere pode ser lida seguindo o caminho da raiz até o nó correspondente. Um movimento para a esquerda corresponde ao bit 0, e um movimento para a direita corresponde ao bit 1.
+                inicialmente, cada caractere da string é representado por um nó cujo peso é igual a quantidade de vezes que o caractere aparece na string. Em seguida, em cada etapa, 2 nós com os menores pesos são combinados criando um novo só cujo peso é a soma dos pesos dos nós originais. O processo continua até que todos os nós tenham sido combinados.
+                Em seguida, veremos como o código de Huffman cria um ótimo código para a string AABACDACA. Inicialmente, existem 4 nós que correspondem aos caracteres da string:
+
+                (imagem 1 pag 73 pdf)
+
+                O nó que representa o caractere A possui peso 5 poque o caractere A aparece 5 vezes na string. Os outros pesos foram calculados da mesma maneira.
+                O primeiro passo é combinar os nós que correspondem aos caracteres B e D, ambos com peso 1. O resultado é:
+
+                (imagem 2 pag 73 pdf)
+
+                Após isso, os nós com peso 2 são combinados:
+
+                (imagem 1 pag 74 pdf)
+
+                Finalmente, os 2 nós restantes são combinados:
+
+                (imagem 2 pag 74 pdf)
+
+                Agora, todos os nós estão na árvore, então o código está pronto. as seguintes palavras chaves podem ser lidas da árvore:
+
+                caractere | palavra-código
+                    A |                 0
+                    B |               110
+                    C |                10
+                    D |               111
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 7:
+    
+    ->Programação dinâmica:
     
