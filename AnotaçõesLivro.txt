@@ -1349,4 +1349,324 @@ Capítulo 6:
 Capítulo 7:
     
     ->Programação dinâmica:
-    
+        Programação dinâmica é uma técnica que combina a corretude da busca completa e eficiência dos algoritmos gulosos. Programação dinâmica pode ser aplicada se o problema puder ser dividido em subproblemas sobrepostos que podem ser resolvidos independentemente.
+        Existes duas maneiras de se usar programação dinâmica:
+
+        • Encontrar uma solução ótima: Queremos encontrar uma solução que seja tão grande quanto possível ou tão pequena quanto possível.
+
+        • Contar o número de soluções: Queremos calcular o total de número de possíveis soluções.
+
+        Primeiro veremos como a programação dinâmica pode ser usada para encontrar uma ótima solução, e então usaremos a mesma ideia para a contagem de soluções.
+        Entenda que a programação dinâmica é um pilar para qualquer carreira na programação competitiva. Enquanto a ideia básica é simples, o desafio é como aplicar a programação dinâmica em diferentes problemas. Esse capítulo introduz um conjunto de problemas clássicos que são um bom ponto de partida.
+
+        ->Problema da moeda:
+            Primeiro focaremos em um problema que já vimos no capítulo 6: Dados um conjunto de valores de moedas coins = {c1,c2,...,ck} e o objetivo é a soma de dinheiro n, nossa tarefa é formar a soma n com o menor número de moedas possível.
+            No capítulo 6, resolvemos o problema usando um algoritmos guloso que sempre escolhia a maior moeda possível. O algoritmo guloso funciona, por exemplo, quando as moedas são moedas de euro, mas, no caso geral, o algoritmo guloso nem sempre produz uma ótima solução.
+            Agora é o momento de resolver o problema de forma eficiente usando programação dinâmica, então o algoritmo funcionará para qualquer conjunto de moedas. O algoritmo de programação dinâmica é baseado em uma função recursiva que percorre todas as possibilidade de como formar a soma, assim como um algoritmo de força bruta. No entanto, o algoritmo de programação dinâmica é eficiente porque usa memorização e calcula a resposta para cada subproblema apenas uma vez. 
+
+            ->Formulação recursiva:
+                A ideia da programação dinâmica é formular o problema recursivamente, de modo que a solução para o problema possa ser calculada a partir das soluções dos subproblemas menores. No problema da moeda, um problema recursivo natural é o seguinte: qual o menor número de moedas necessário para formar a soma x?
+                Vamos denotar por solve(x) o número mínimo de número de moedas necessário para a soma x. Os valores da função dependem do valores das moedas. Por exemplo, se as moedas forem coins = {1,3,4}, os primeiros valores da função seriam os seguintes:
+
+                solve(0) = 0
+                solve(1) = 1
+                solve(2) = 2
+                solve(3) = 1
+                solve(4) = 1
+                solve(5) = 2
+                solve(6) = 2
+                solve(7) = 2
+                solve(8) = 2
+                solve(9) = 3
+                solve(10) = 3
+
+                Por exemplo, solve(10) = 3, porque pelo menos 3 moedas são necessárias para formar a soma 10. A solução ótima é 3 + 3 + 4 = 10.
+                A propriedade essencial de solve é que seus valores podem ser recursivamente calculados de valores menores. A ideia é focar na primeira moeda que escolhemos para a soma. Por exemplo, no cenário acima, a primeira moeda pode ser ou 1 ou 3 ou 4. Se escolhermos primeiro a moeda 1, o resto da tarefa é formar a soma 9 usando o mínimo de moedas possível, qual é um subproblema do problema original. É claro que o mesmo se aplica às moedas 3 e 4. Assim, podemos usar a seguinte fórmula recursiva para calcular o número mínimo de moedas: 
+
+                solve(x) = min(solve(x-1) + 1, solve(x-3) + 1, solve(x-4) + 1).
+
+                O caso base para a recursividade é solve(0) = 0, porque não são necessárias moedas para formar uma soma vazia. Por exemplo,
+                
+                solve(10) = solve(7) + 1 = solve(4) + 2 = solve(0) + 3 = 3.
+
+                Agora estamos preparados para oferecer uma função recursiva geral ue calcula o mínimo de moedas necessárias para formar uma soma x:
+
+                (fórmula pag 76 pdf)
+
+                Primeiro, se x < 0, o valor é INF, porque não é possível formar uma soma negativa de dinheiro. Em seguida, se x = 0, o valor é 0, porque não são necessárias moedas para formar uma soma vazia. Finalmente, se x > 0, a variável c percorre todas as possibilidades de como escolher a primeiro moeda da soma.
+                Uma vez que a função recursiva que resolve o problema é encontrada, podemos diretamente implementar a solução em C++ (a contante INF denota o infinito):
+
+                int solve(int x){
+                    if(x < 0) return INF;
+                    if(x = 0) return 0;
+                    
+                    int best = INF;
+
+                    for(auto c : coins){
+                        best = min(best, solve(x-c)+1);
+                    }
+
+                    return best;
+                }
+
+                Ainda assim, essa função não é eficiente, porque existirão números exponenciais de caminhos para construir a soma. No entanto, em seguida veremos como fazer essa função eficiente usando a técnica chamada memorização.
+
+            ->Usando memorização:
+                A ideia da programação dinâmica é usar memorização para calcular eficientemente o valor de uma função recursiva. Isso significa que o valor da função é armazenado em um array após ser calculado. Para cada parâmetro, o valor da função é calculado recursivamente apenas uma vez, e após isso, o valor pode ser diretamente tirado do array.
+                Nesse problema, usaremos os arrays
+
+                bool ready[N];
+                int value[N];
+
+                onde ready[x] indica se o valor de solve(x) foi calculado, e se foi, value[x] contém esse valor. A constante N foi escolhida de modo que todos os valores necessários caibam nos arrays.
+                Agora a função pode ser eficientemente implementada da seguinte forma:
+
+                int solve(int x){
+                    if(x < 0) return INF;
+                    if(x = 0) return 0;
+                    if(ready[x]) return value[x];
+
+                    int best = INF;
+
+                    for(auto c : coins){
+                        best = min(best, solve(x-c)+1);
+                    }
+
+                    value[x] = best;
+                    ready[x] = true;
+                    return best;
+                }
+
+                A função mantém os casos base x < 0 e x = 0 como antes. Em seguida, a função verifica de ready[x] se solve(x) já foi armazenado em value[x], e se foi, a função retorna diretamente o valor. Caso contrário, a função calcula o valor de solve(x) recursivamente e armazena ele em value[x].
+                Essa função funciona eficientemente, porque a resposta para cada parâmetro x é calculado recursivamente apenas uma vez. Após o valor de solve(x) ser armazenado em value[x], pode ser eficiente recuperado sempre que a função for chamada novamente com o parâmetro x. A complexidade de tempo desse algoritmo é O(nk), onde n é a soma e k o número de moeda.
+                Note que também podemos construir o array value de forma iterativa usando um loop que simplesmente calcula todos os valores de solve para os parâmetros 0...n:
+
+                value[0] = 0;
+                for(int x = 1 x <= n; x++){
+                    value[x] = INF;
+                    for(auto c : coins){
+                        if(x-c >= 0){
+                            value[x] = min(value[x], value[x-c]+1);
+                        }
+                    }
+                }
+
+                De fato, a maioria dos programadores competitivos prefere essa implementação, por que é menor e possui menor fatores constantes. De agora em diante, também usaremos implementações iterativas em nossos exemplos. Ainda assim, é frequentemente mais fácil pensar em soluções de programação dinâmica em termos de funções recursivas.
+            
+            ->Construindo uma solução:
+                Às vezes, nos é solicitado tanto encontrar o valor de uma solução ótima quanto fornecer um exemplo de como essa solução pode ser construída. No problema das moedas, por exemplo, podemos declarar outro array que indica, para cada quantia de dinheiro, a primeira moeda em uma solução ótima:
+
+                int first[N];
+
+                Em seguida, modificamos o algoritmo da seguinte forma:
+
+                value[0] = 0;
+                for(int x = 1; x <= n; x++){
+                    value[x] = INF;
+                    for(auto c : coins){
+                        if(x-c >= 0 && value[x-c]+1 < value[x]){
+                            value[x] = value[x-c]+1;
+                            first[x] = c;
+                        }
+                    }
+                }
+
+                Após isso, o seguinte código pode ser usado para imprimir as moedas que aparecem em uma solução ótima para a soma n:
+
+                while(n > 0){
+                    cout << first[n] << "\n";
+                    n -= first[n];
+                }
+
+            ->Contando o número de soluções:
+                Consideremos agora outra versão do problema da moeda, onde a nossa tarefa é calcular o total de maneiras possíveis de produzir a soma x usando as moedas. Por exemplo, se as moedas forem coins = {1,3,4} e x = 5, existem um total de 6 maneiras:
+                
+                • 1+1+1+1+1             • 3+1+1
+                • 1+1+3                 • 1+4
+                • 1+3+1                 • 4+1
+
+                Novamente, podemos resolver esse problema de forma recursiva. Vamos denotar solve(x) o número de caminhos para formar a soma x. Por exemplo, se as moedas forem coins={1,3,4}, então sole(5) = 6 e a fórmula recursiva É
+                
+                solve(x) = solve(x-1)+solve(x-1)+solve(x-4).
+                
+                Em seguida, o caso geral da função recursiva é o seguinte:
+
+                (fórmula pag 79 pdf)
+
+                Se x<0, o valor é 0, porque não existem soluções. Se x=0, o valor é 1, porque existe apenas uma maneira de formar uma soma vazia. Caso contrário, calculamos a soma de todos os valores da forma solve(x - c), onde c está em coins.
+                O código a seguir constrói um array count de modo que count[x] seja igual ao valor de solve(x) para 0 <= x <= n:
+
+                count[0] = 1;
+                for(int x = 1; x <= n; x++){
+                    for(auto c : coins){
+                        if(x-c >= 0){
+                            count[x] += count[x-c];
+                        }
+                    }
+                }
+
+                Frequentemente o número de soluções é tão grande que não é necessário calcular o exato número, mas é suficiente oferecer como resposta o mudulo m onde, por exemplo, m = 10^9 + 7. Isso pode ser feito alterando o código para que todos os cálculos sejam feitos módulo m. No código acima, é suficiente adiciona a linha:
+                
+                count[x] %= m;
+
+                após a linha
+                
+                count[x] += count[x-c];
+
+                Agora já discutimos todas as ideias básica da programação dinâmica. Já que a programação dinâmica pode ser usada em muitas situações diferentes, agora passaremos por um conjunto de problemas que mostram mais exemplos sobre as possibilidades da programação dinâmica.
+
+        ->Subsequência crescente mais longa:
+            Nosso primeiro problema é encontrar a mais longa subsequência crescente em um array de n elementos. Isso é, uma sequência máxima de elementos do array que vai da esquerda para direita, e cada elemento da sequência é maior que o elemento anterior. Por exemplo, no array
+
+            (imagem 1 pg 80 pdf)
+            
+            a subsequência crescente mais longa contém 4 elementos:
+
+            (imagem 2 pg 80 pdf)
+
+            Deixe length(k) denotar o comprimento da subsequência crescente mais longa que termina na posição k. Assim, se calculamos todos os valor de length(k) onde 0 <= k <= n-1, encontraremos o tamanho da maior subsequência crescente. Por exemplo, os valores da função do array acima é a seguinte:
+
+            length(0) = 0;
+            length(1) = 1;
+            length(2) = 2;
+            length(3) = 1;
+            length(4) = 3;
+            length(5) = 2;
+            length(6) = 4;
+            length(7) = 2;
+            
+            Por exemplo, length(6) = 4, porque a maior subsequência crescente que termina na posição 6 consiste em 4 elementos.
+            Para calcular o valor de length(k), devemos encontrar uma posição i < k para qual a array[i] < array[k] e length(i) seja o maior possível. Então, sabemos que length(k) = length(i)+1, porque essa é a maneira ideal de adicionar array[k] a uma subsequência. No entanto, se não houver tal posição i, então length(k) = 1, o que significa que a subsequência contém apenas array[k].
+            Uma vez que todos os valores possam ser calculados a partir de seus valores menores, podemos usar a programação dinâmica. No código a seguir, os valores da função serão armazenados em um array chamado length.
+
+            for(int k = 0; k < n; k++){
+                length[k] = 1;
+                for(int i = 0; i < k; i++){
+                    if(array[i] < array[k]){
+                        length[k] = max(length[k], length[i]+1);
+                    }
+                }
+            }
+
+            Esse código trabalha em tempo O(n²), porque consiste em 2 laços aninhados. No entanto, também é possível implementar o cálculo de programação dinâmica de maneira mais eficiente em tempo O(nlogn). Você consegue encontrar uma maneira de fazer isso?
+
+        ->Caminhos em um gride:
+            Nosso próximo problema é encontrar um caminho do canto superior esquerdo para o canto inferior direito em uma grade n x n, de forma que só nos movemos para baixo e para direita. Cada quadrado contém um inteiro positivo, e o caminho deve ser construído de forma que a soma dos valores ao longo do caminho seja a maior possível.
+            A seguinte imagem mostra um ótimo caminho para em um gride:
+
+            (imagem 1 pag 81 pdf)
+
+            A soma dos valores no caminho é 67, e é a maior soma possível de ser feita em um caminho do canto superior esquerdo para o canto inferior direito.
+            Assuma que as linhas e colunas do gride são numeradas de 1 até n, e value[y][x] é igual ao valor do quadrado (y,x). Deixaremos sum(y,x) denotar o máximo da soma em um caminho do quadrado (y,x) do canto superior esquerdo. Agora, sum(n,n) nos diz a soma máximo do canto superior esquerdo até o canto inferior direito. Por exemplo, no gride acima, sum(5,5) = 67.
+            Podemos calcular as somas recursivamente da seguinte forma:
+
+            sum(y,x) = max(sum(y,x-1), sum(y-1,x)) + value[y][x]
+
+            A fórmula recursiva é baseada na observação que o caminho termina no quadrado (y,x) pode vir ou do quadrado(y,x-1) ou do quadrado (y-1,x):
+
+            (imagem 1 pg 82 pdf)
+
+            Assim, selecionamos a direção que irá maximizar a soma. Assumimos que sum(y,x) = 0 se y = 0 ou x = 0 (porque não existem tais caminhos), então a fórmula recursiva também funciona quando y = 1 ou x = 1.
+            Como a função sum tem dois parâmetros, o array de programação dinâmica também terá duas dimensões. Por exemplo, podemos usar um array 
+            
+            int sum[N][N];
+
+            e calcular a forma da seguinte forma:
+
+            for(int y = 1; y <= n; y++){
+                for(int x = 1; x <= n; x++){
+                    sum[y][x] = max(sum[y][x-1], sum[y-1][x]) + value[y][x];
+                }
+            }
+
+            A complexidade de tempo do algoritmo é O(n²).
+
+        ->Problema da mochila:
+            O termo "knapsack" refere-se a problemas nos quais um conjunto de objetos é dado, e subconjuntos com certas propriedades precisam ser encontrados. Problemas de mochila muitas vezes podem ser resolvidos usando programação dinâmica.
+            Nesta seção, focamos no seguinte problema: Dada uma lista de pesos [w1, w2, ..., wn], determine todas as somas que podem ser construídas usando os pesos. Por exemplo, se os pesos forem [1, 3, 3, 5], as seguintes somas são possíveis:
+            
+            (imagem 2 pg 82 pdf)
+
+            Neste caso, todas as somas entre 0 e 12 são possíveis, exceto 2 e 10. Por exemplo, a soma 7 é possível porque podemos selecionar os pesos [1, 3, 3].
+            Para resolver o problema, focamos em subproblemas onde usamos apenas os primeiros k pesos para construir somas. Seja possible(x, k) = true se pudermos construir uma soma x usando os primeiros k pesos e, caso contrário, possible(x, k) = false. Os valores da função podem ser calculados de forma recursiva da seguinte maneira:
+
+            possible(x,k) = possible(x−wk,k −1)∨possible(x,k −1)
+
+            A fórmula é baseada no fato de que podemos ou não usar o peso wk na soma. Se usarmos wk, a tarefa restante é formar a soma x - wk usando os primeiros k - 1 pesos, e se não usarmos wk, a tarefa restante é formar a soma x usando os primeiros k - 1 pesos. Como casos base,
+
+            (fórmula 1 pg 83 pdf)
+
+            pois se nenhum peso for usado, só podemos formar a soma 0.
+            A tabela a seguir mostra todos os valores da função para os pesos [1,3,3,5] (o símbolo "X" indica os valores verdadeiros):
+
+            (table 1 pg 83 pdf)
+
+            Após calcular esses valores, possible(x,n) nos diz se podemos construir uma soma x usando todos os pesos.
+            Vamos considerar que W é a soma total dos pesos. A seguinte solução de programação dinâmica em O(nW) corresponde à função recursiva:
+            
+            possible[0][0] = true;
+            for(int k = 1; k <=n; k++){
+                for(int x = 0; x <= W; x++){
+                    if(x-w[k] >= 0) possible[x][k] |= possible[x-w[k]][k-1];
+                    possible[x][k] |= possible[x][k-1];
+                }
+            }
+
+            No entanto, aqui está uma implementação melhor que usa apenas um array unidimensional "possible[x]" para indicar se podemos construir um subconjunto com a soma x. O truque é atualizar o array da direita para a esquerda para cada novo peso:
+
+            possible[0] = true;
+            for (int k = 1; k <= n; k++) {
+                for (int x = W; x >= 0; x--) {
+                    if (possible[x]) possible[x+w[k]] = true;
+                }
+            }
+
+            Note que a ideia geral apresentada aqui pode ser usada em muitos problemas de mochila (knapsack). Por exemplo, se nos forem dados objetos com pesos e valores, podemos determinar para cada soma de pesos o valor máximo da soma de um subconjunto.
+
+        ->Distância de edição:
+            A distância de edição, também conhecida como distância de Levenshtein, é o número mínimo de operações de edição necessárias para transformar uma string em outra As operações de edição permitidas são as seguintes:
+
+            • inserir um caractere (por exemplo, ABC → ABCA)
+            • remover um caractere (por exemplo, ABC → AC)
+            • modificar um caractere (por exemplo, ABC → ADC)
+
+            Por exemplo, a distância de edição entre LOVE e MOVIE é 2, porque primeiro podemos performar a operação LOVE -> MOVE (modificação) e então a operação MOVE->MOVIE (inserção). Esse é o menor número possível de operação, porque é claro que uma operação não seria o suficiente.
+            Supondo que é nos dada uma string x de tamanho n e uma string y de tamanho m, e nós queremos calcular a distância de edição entre x e y. Para resolver esse problem, definimos a função distance(a,b) que dá a distância de edição entre os prefixos x[0...a] e y[0...b]. Portanto, usando essa função, a distância de edição entre x e y é igual distance(n-1,m-1).
+            Podemos calcular os valores de distance da seguinte forma:
+
+            distance(a,b) = min(distance(a,b-1)+1, distance(a-1,b)+1, distance(a-1,b-1)+cost(a,b)).
+
+            Aqui, cost(a,b) = 0 se x[a] = y[b], e caso contrário cost(a,b) = 1. A fórmula considera as seguintes maneiras de editar a string x:
+
+            • distance(a, b-1): inserir um caractere no final de x
+            • distance(a-1,b): remover o último caractere de x
+            • distance(a-1,b-1): corresponder ou modificar o último caractere de x
+
+            Nos dois primeiros casos, é necessária uma operação de edição (inserir ou remover). No último caso, se x[a] = y[b], podemos corresponder os últimos caracteres sem edição, caso contrário, é necessária uma operação de edição (modificar).
+
+            (imagem 1 pg 84 pdf)
+
+            O canto inferior direito da tabela nos dis que a distância de edição entre LOVE  e MOVIE é 2. A tabela também mostra como construir o a sequência mais curta das operação de edição. Nesse caso, o caminho é o seguinte:
+
+            (imagem 1 pg 85 pdf)
+
+            
+            Os últimos caracteres de LOVE e MOVIE são iguais, então a distância de edição entre eles é igual à distância de edição entre LOV e MOVI. Podemos usar uma operação de edição para remover o caractere I de MOVI. Portanto, a distância de edição é um número maior do que a distância de edição entre LOV e MOV, e assim por diante.
+
+        ->Contagem de telhas:
+            Às vezes, os estados de uma solução de programação dinâmica são mais complexos do que combinações fixas de números. Como exemplo, considere o problema de calcular o número de maneiras distintas de preencher uma grade n × m usando telhas de tamanho 1 × 2 e 2 × 1. Por exemplo, uma solução válida para a grade 4 × 7 é:
+
+            (imagem 2 pg 85 pdf)
+
+            e o número total de soluções é 781.
+            O problema pode ser resolvido usando programação dinâmica percorrendo a grade linha por linha. Cada linha em uma solução pode ser representada como uma string que contém m caracteres do conjunto (conjunto apresentado na página 85 pdf). Por exemplo, a solução acima consiste em quatro linhas que correspondem às seguintes strings:
+
+            (strings pag 85 pdf)
+
+            Deixe count(k, x) representar o número de maneiras de construir uma solução para as linhas 1...k da grade de modo que a string x corresponda à linha k. É possível usar programação dinâmica aqui, porque o estado de uma linha é limitado apenas pelo estado da linha anterior.
+
+            (finalizar tradução pelo word, devido símbolos estranhos).
+        
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Capítulo 8:
