@@ -3,7 +3,10 @@
         "iostream": "cpp",
         "iomanip": "cpp",
         "ostream": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "xutility": "cpp",
+        "initializer_list": "cpp",
+        "xstring": "cpp"
     },
     "cSpell.language": "en,pt-BR"
 }
